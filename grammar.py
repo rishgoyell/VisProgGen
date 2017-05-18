@@ -1,43 +1,42 @@
-import canvasops as ops
+from canvasops import canvas
 
 class Rules(object):
     def p_S(self, p ):
         '''S : E
         '''
-        print(p[1])
+        p[1].display()
 
     def p_E1(self, p):
         '''E  : E E UNION
         '''
-        p[0] = ops.union(p[1],p[2])
+        p[0] = p[1].union(p[2])
 
     def p_E2(self, p):
         '''E : E E DIFFERENCE
         '''
-        p[0] = ops.difference(p[1],p[2])
+        p[0] = p[1].difference(p[2])
 
 
     def p_E3(self, p):
         '''E : E E INTERSECTION
         '''
-        p[0] = ops.intersection(p[1],p[2])
+        p[0] = p[1].intersection(p[2])
 
 
     def p_E4(self, p):
         '''E : IDENTIFIER '(' INTEGER ',' INTEGER ',' INTEGER ')'
         '''
-        x = ops.canvas()
+        p[0] = canvas()
         center = [p[3], p[5]]
         scale = p[7]
 
         if p[1] == 'c':
-            x.draw_circle(center, scale)
+            p[0].draw_circle(center, scale)
         elif p[1] == 's':
-            x.draw_square(center, scale)
+            p[0].draw_square(center, scale)
         elif p[1] == 't':
-            x.draw_triangle(center, scale)
+            p[0].draw_triangle(center, scale)
 
-        p[0] = x.canvasID
 
     def p_error(self, p):
         try:

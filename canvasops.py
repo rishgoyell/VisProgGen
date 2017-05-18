@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
 from typing import List
 from skimage import draw
 import json
@@ -7,20 +8,7 @@ from copy import copy
 #%matplotlib inline
 
 
-canvas_shape = [64,64]
-
-
-def union(c1, c2):
-	return c1 + c2
-
-
-def difference(c1, c2):
-	return c1 - c2
-
-
-def intersection(c1, c2):
-	return c1 * c2
-
+canvas_shape = [128,128]
 
 class canvas(object):
 	global canvas_shape
@@ -30,7 +18,7 @@ class canvas(object):
 	def __init__(self):
 		canvas.canvasID = canvas.canvasID+1
 		self.canvasID = copy(canvas.canvasID)
-		self.drawing = np.zeros(canvas_shape, dtype=bool)
+		self.drawing = np.zeros(canvas_shape, dtype=int)
 
 
 	################# DRAW CIRCLE ################
@@ -40,7 +28,7 @@ class canvas(object):
 		for i, j in zip(rr, cc):
 			if not self.inside_canvas([i, j]):
 				return None
-		arr[rr, cc] = 1
+		arr[cc, rr] = True
 		self.drawing = arr
 
 
@@ -94,14 +82,32 @@ class canvas(object):
 			#             print("ooops square", i, j)
 				return None
 
-		arr[ROWS, COLS] = True
+		arr[COLS, ROWS] = True
 		self.drawing = arr
 
 
 	################### check if shapes lie inside canvas ##################
 	def inside_canvas(self, point):
-	    if ((0 <= point[0]) and (point[0] <= canvas_shape[0])) and (
-	        (0 <= point[1]) and (point[1] <= canvas_shape[1])):
-	        return True
-	    else:
-	        return False
+		if ((0 <= point[0]) and (point[0] <= canvas_shape[0])) and (
+		    (0 <= point[1]) and (point[1] <= canvas_shape[1])):
+			return True
+		else:
+			return False
+
+
+	def union(self, c2):
+		self.drawing = np.logical_or(self.drawing, c2.drawing)
+		return self
+
+
+	def difference(self, c2):
+		self.drawing =  self.drawing - np.logical_and(self.drawing, c2.drawing)
+		return self
+
+	def intersection(self, c2):
+		self.drawing = np.logical_and(self.drawing, c2.drawing)
+		return self
+
+	def display(self):
+		a = np.logical_not(self.drawing)
+		plt.imsave('filename.png', np.array(a).reshape(canvas_shape[0], canvas_shape[1]), cmap=cm.gray)
