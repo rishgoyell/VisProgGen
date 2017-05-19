@@ -1,10 +1,12 @@
 from canvasops import canvas
 
 class Rules(object):
+    numgen = 0
     def p_S(self, p ):
         '''S : E
         '''
-        p[1].display()
+        p[1].save(Rules.numgen+1)
+        Rules.numgen = Rules.numgen + p[1].flag
 
     def p_E1(self, p):
         '''E  : E E UNION

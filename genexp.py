@@ -7,8 +7,8 @@ import numpy as np
 import random
 from canvasops import canvas_shape
 
-xstep = canvas_shape[0]//8
-ystep = canvas_shape[1]//8
+xstep = canvas_shape[0]//4
+ystep = canvas_shape[1]//4
 
 min_scale = 8
 max_scale = canvas_shape[0]//2
@@ -22,11 +22,12 @@ shapelist = ['c', 't', 's']
 numexp = 50
 
 def genoperand():
-	x = str(xlist[random.randint(0, len(xlist)-1)])
-	y = str(ylist[random.randint(0, len(ylist)-1)])
-	scale = str(scalelist[random.randint(0, len(scalelist)-1)])
-	shape = shapelist[random.randint(0, len(shapelist)-1)]
-	return shape + '(' + x + ',' + y + ',' + scale + ')'
+	while True:
+		x = str(xlist[random.randint(0, len(xlist)-1)])
+		y = str(ylist[random.randint(0, len(ylist)-1)])
+		scale = str(scalelist[random.randint(0, len(scalelist)-1)])
+		shape = shapelist[random.randint(0, len(shapelist)-1)]
+		return shape + '(' + x + ',' + y + ',' + scale + ')'
 
 
 def randomExp():
@@ -68,11 +69,6 @@ def fixedSizeExp(numops):
 	for i in range(len(exp)):
 		expstring = expstring + exp[i]
 	return expstring
-
-
-
-for i in range(50):
-	print(randomExp())
 
 
 
