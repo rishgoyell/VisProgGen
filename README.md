@@ -3,7 +3,7 @@ Enable generation of images by combining simple shapes using operations like uni
 
 
 ## Implementation
-Implemented in python using PLY and other standard libraries.
+Implemented in python 3.6 using PLY and other standard libraries.
 
 ## Grammar
  - Write simple postfix notation
@@ -15,4 +15,5 @@ Implemented in python using PLY and other standard libraries.
 
 ## Running the Code
  - Write out the required expression in a file, say ```filename1.txt```
- - Generate the corresponding image by executing ```./main.py filename_1```
+ - Generate the corresponding image by executing ```python main.py filename_1```
+ - For generating random expressions and their corresponding visualisation, run ```python main.py``` without a filename following it. Control the number of random samples by changing the ```numexs``` variable in main.py.
