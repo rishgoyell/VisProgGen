@@ -4,7 +4,6 @@ to tokenize the program
 '''
 import ply.lex as lex
 def build_lexer(debug_mode=True, optimize_mode=False):
-    # regular expression definitions taken from https://github.com/ayusek/ada-compiler/blob/master/Lexer/adaTokens.py
 
     tokens = [
         'IDENTIFIER',

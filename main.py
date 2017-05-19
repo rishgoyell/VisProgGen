@@ -6,7 +6,7 @@ from grammar import Rules
 
 #pydot_error_chars = ',#:@'
 
-class Ada_Parser(Rules):
+class Parser(Rules):
     def __init__(self):
         from token_file import build_lexer
         self.tokens, self.lexer = build_lexer(debug_mode=False)
@@ -30,7 +30,7 @@ class Ada_Parser(Rules):
 
 if __name__ == '__main__':
     import sys
-    p1 = Ada_Parser()
+    p1 = Parser()
     assert len(sys.argv) > 1
     for i in range(1, len(sys.argv)):
         p1.successful = True
