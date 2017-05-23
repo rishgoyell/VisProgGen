@@ -8,7 +8,7 @@ from copy import copy
 #%matplotlib inline
 
 
-canvas_shape = [64,64]
+canvas_shape = [128, 128]
 numpixels = canvas_shape[0]*canvas_shape[1]
 
 class canvas(object):
@@ -21,6 +21,7 @@ class canvas(object):
 		self.canvasID = copy(canvas.canvasID)
 		self.drawing = np.zeros(canvas_shape, dtype=int)
 		self.flag = 1
+		self.nodeID = None
 
 
 	################# DRAW CIRCLE ################
@@ -155,11 +156,11 @@ class canvas(object):
 		return self
 
 
-	def save(self, saveid, randflag):
+	def save(self, filename, randflag):
 		#for expression received through a file
 		if not randflag:
 			a = np.logical_not(self.drawing)
-			plt.imsave('genImage.png', np.array(a).reshape(canvas_shape[0], canvas_shape[1]), cmap=cm.gray)			
+			plt.imsave(filename+'.png', np.array(a).reshape(canvas_shape[0], canvas_shape[1]), cmap=cm.gray)			
 
 		#for expression received randomly
 		onpixels = np.sum(self.drawing)
@@ -167,5 +168,5 @@ class canvas(object):
 			self.flag = 0
 		if self.flag:
 			a = np.logical_not(self.drawing)
-			plt.imsave('images1/'+str(saveid)+'.png', np.array(a).reshape(canvas_shape[0], canvas_shape[1]), cmap=cm.gray)
+			plt.imsave(filename +'.png', np.array(a).reshape(canvas_shape[0], canvas_shape[1]), cmap=cm.gray)
 
