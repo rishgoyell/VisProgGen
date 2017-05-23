@@ -103,7 +103,14 @@ class canvas(object):
 		else:
 			return False
 
-	def union(self, c2):
+
+	def union(self, c2, randflag):
+		#for expression received through a file
+		if not randflag:
+			self.drawing = np.logical_or(self.drawing, c2.drawing)
+			return self
+
+		#for expression received randomly
 		if c2.flag == 0:
 			self.flag = 0
 		temp = np.sum(self.drawing)
@@ -113,7 +120,14 @@ class canvas(object):
 			self.flag = 0
 		return self
 
-	def difference(self, c2):
+
+	def difference(self, c2, randflag):
+		#for expression received through a file
+		if not randflag:
+			self.drawing =  self.drawing - np.logical_and(self.drawing, c2.drawing)
+			return self
+
+		#for expression received randomly
 		if c2.flag == 0:
 			self.flag = 0
 		temp = np.sum(self.drawing)
@@ -123,7 +137,14 @@ class canvas(object):
 			self.flag = 0
 		return self
 
-	def intersection(self, c2):
+
+	def intersection(self, c2, randflag):
+		#for expression received through a file
+		if not randflag:
+			self.drawing = np.logical_and(self.drawing, c2.drawing)
+			return self
+
+		#for expression received randomly
 		if c2.flag == 0:
 			self.flag = 0
 		temp = np.sum(self.drawing)
@@ -133,11 +154,18 @@ class canvas(object):
 			self.flag = 0
 		return self
 
-	def save(self, saveid):
+
+	def save(self, saveid, randflag):
+		#for expression received through a file
+		if not randflag:
+			a = np.logical_not(self.drawing)
+			plt.imsave('genImage.png', np.array(a).reshape(canvas_shape[0], canvas_shape[1]), cmap=cm.gray)			
+
+		#for expression received randomly
 		onpixels = np.sum(self.drawing)
 		if onpixels <= int(0.2*numpixels) or int(0.8*numpixels) <= onpixels:
 			self.flag = 0
 		if self.flag:
 			a = np.logical_not(self.drawing)
-			plt.imsave('images/image'+str(saveid)+'.png', np.array(a).reshape(canvas_shape[0], canvas_shape[1]), cmap=cm.gray)
+			plt.imsave('images1/'+str(saveid)+'.png', np.array(a).reshape(canvas_shape[0], canvas_shape[1]), cmap=cm.gray)
 

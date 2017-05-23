@@ -19,8 +19,6 @@ ylist = range(min_scale, canvas_shape[1], ystep)
 scalelist = range(min_scale, max_scale+1, 4)
 shapelist = ['c', 't', 's']
 
-numexp = 50
-
 def genoperand():
 	while True:
 		x = str(xlist[random.randint(0, len(xlist)-1)])
