@@ -16,4 +16,5 @@ Implemented in python 3.6 using PLY and other standard libraries.
 ## Running the Code
  - Write out the required expression in a file, say ```filename1.txt```
  - Generate the corresponding image by executing ```python main.py filename_1```
- - For generating random expressions and their corresponding visualisation, run ```python main.py``` without a filename following it. Control the number of random samples by changing the ```numexs``` variable in main.py.
+ - For generating random expressions and their corresponding visualisation, run ```python main.py``` without a filename following it. Control the number of random samples by changing the ```numexs``` variable and the number of operands in the random expressions by changing the ```numops``` variable in main.py.
+ - Canvas size can be controlled through the ```canvas_shape``` variable in canvasops.py
