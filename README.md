@@ -1,9 +1,9 @@
-# Compiler for a simple language to do basic Constructive Solid Geometry
-Enable generation of images by combining simple shapes using operations like union, intersection, subtraction.
-
+# Parser for a simple language to do basic Constructive Solid Geometry
+ - Enables generation of images by combining simple shapes using operations like union, intersection, subtraction.
+ - Visualize the generation process as a tree.
 
 ## Implementation
-Implemented in python 3.6 using PLY and other standard libraries.
+Implemented in python 3.6 using PLY, pydot and other standard python libraries.
 
 ## Grammar
  - Write simple postfix notation
