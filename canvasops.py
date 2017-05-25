@@ -8,7 +8,7 @@ from copy import copy
 #%matplotlib inline
 
 
-canvas_shape = [128, 128]
+canvas_shape = [64, 64]
 numpixels = canvas_shape[0]*canvas_shape[1]
 
 class canvas(object):

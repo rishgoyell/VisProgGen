@@ -56,7 +56,12 @@ def fixedSizeExp(numops):
 		operand = genoperand()
 		exp.append(operand)
 	for i in range(numops):
-		op = oplist[random.randint(0,2)]
+		op = random.randint(0,30)
+		if op in range(1,7):
+			op = 1
+		elif op in range(7,31):
+			op = 2
+		op = oplist[op]
 		exp.append(op)
 
 	if numops==0:
