@@ -47,8 +47,8 @@ def build_lexer(debug_mode=True, optimize_mode=False):
         t.lexer.lineno += len(t.value)
 
     # A string containing ignored characters (spaces and tabs)
-    #t_ignore  = ' \t'
-    #t_ignore_COMMENT = r'%.*'
+    t_ignore  = ' \t'
+    t_ignore_COMMENT = r'%.*'
     # Error handling rule
     def t_error(t):
         print("Illegal character '%s'" % t.value[0])

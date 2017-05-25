@@ -10,8 +10,9 @@ from canvasops import canvas
 
 #pydot_error_chars = ',#:@'
 
-numexs = 50
-numops = 1
+numexs = 500
+numops = 2
+opcolor = {'+': 'yellow', '-': 'red', '*':'blue'}
 
 class Parser(Rules):
     global numexs
@@ -66,6 +67,7 @@ class Parser(Rules):
 
     def makenode(self, p):
         global numdraws
+        global opcolor
         '''
         p : stack
         returns root node
@@ -77,12 +79,12 @@ class Parser(Rules):
         self.numdraws = self.numdraws+1
 
         if len(p) == 4:
-            parent = pydot.Node(parent_id, style="filled", shape='square', image=tempimage+'.png', fontcolor='transparent')
+            parent = pydot.Node(parent_id, style="filled", fillcolor=opcolor[p[3]], shape='square', image=tempimage+'.png', fontcolor='transparent')
             self.graph.add_node(parent)
-            self.graph.add_edge(pydot.Edge(parent_id, p[1].nodeID, color='red', label=p[3]))
-            self.graph.add_edge(pydot.Edge(parent_id, p[2].nodeID, color='yellow'))
+            self.graph.add_edge(pydot.Edge(parent_id, p[1].nodeID, fontcolor=opcolor[p[3]], label=p[3]))
+            self.graph.add_edge(pydot.Edge(parent_id, p[2].nodeID))
         else:
-            parent = pydot.Node(parent_id, fontcolor='transparent', shape='square', image=tempimage+'.png')
+            parent = pydot.Node(parent_id, style="filled", fontcolor='transparent', shape='square', image=tempimage+'.png')
             self.graph.add_node(parent)
         p[0].nodeID = parent_id
 
@@ -106,6 +108,7 @@ if __name__ == '__main__':
             p1.processFile(sys.argv[i])
     else:
         flag = 1
+        Rules.visualize = False
         while flag:
             p1.successful = True
             exp = genexp.fixedSizeExp(numops)

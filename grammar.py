@@ -1,12 +1,14 @@
 from canvasops import canvas
+import numpy as np
+
 
 class Rules(object):
     numgen = 0      #keeps count of number of valid expressions generated
-    path = '/home/rishabh/Documents/VisProgGen/images1/'
+    path = '/home/rishabh/Documents/VisProgGen/test/'
     filename = open(path+'expressions.txt', 'w')  #file that stores list of expressions corresonding to all data
     exp = None        #the expression being parsed
     random = 1        #set to 1 if random expressionas are being generated and 0  if expression is provided
-    visualize = False     #visualize expressions as a tree
+    visualize = True     #visualize expressions as a tree
     
 
     def p_S(self, p ):

@@ -7,8 +7,9 @@ import numpy as np
 import random
 from canvasops import canvas_shape
 
-xstep = canvas_shape[0]//4
-ystep = canvas_shape[1]//4
+xstep = canvas_shape[0]//8
+ystep = canvas_shape[1]//8
+scalestep = 4
 
 min_scale = 8
 max_scale = canvas_shape[0]//2
@@ -16,7 +17,7 @@ max_scale = canvas_shape[0]//2
 oplist = ['+', '-', '*']
 xlist = range(min_scale, canvas_shape[0], xstep)
 ylist = range(min_scale, canvas_shape[1], ystep)
-scalelist = range(min_scale, max_scale+1, 4)
+scalelist = range(min_scale, max_scale+1, scalestep)
 shapelist = ['c', 't', 's']
 
 def genoperand():
