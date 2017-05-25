@@ -9,7 +9,7 @@ class Rules(object):
     exp = None        #the expression being parsed
     random = 1        #set to 1 if random expressionas are being generated and 0  if expression is provided
     visualize = True     #visualize expressions as a tree
-    
+
 
     def p_S(self, p ):
         '''S : E
@@ -19,7 +19,7 @@ class Rules(object):
             Rules.filename.write(Rules.exp+"\n")
             Rules.numgen = Rules.numgen + 1
 
-    
+
     def p_E1(self, p):
         '''E  : E E UNION
         '''
@@ -27,7 +27,7 @@ class Rules(object):
         if Rules.visualize:
             self.makenode(p)
 
-    
+
     def p_E2(self, p):
         '''E : E E DIFFERENCE
         '''

@@ -11,7 +11,7 @@ from canvasops import canvas
 #pydot_error_chars = ',#:@'
 
 numexs = 500
-numops = 2
+numops  =2
 opcolor = {'+': 'yellow', '-': 'red', '*':'blue'}
 
 class Parser(Rules):
@@ -40,7 +40,7 @@ class Parser(Rules):
                     if Rules.visualize:
                         self.plot_parse_tree(filename)      #save the visualization graph
                         #remove unwanted intermediate canvases
-                        for f in os.listdir(Rules.path):    
+                        for f in os.listdir(Rules.path):
                             if re.search(r'temp[0-9]+', f):
                                 os.remove(os.path.join(Rules.path, f))
 

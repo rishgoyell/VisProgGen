@@ -4,11 +4,11 @@ from genexp import canvas_shape, xstep, ystep, scalestep, min_scale, max_scale, 
 
 class stats(object):
 	def __init__(self, canvas_shape, xstep, ystep, scalestep, min_scale, max_scale):
-		self.canvas_shape = canvas_shape 
-		self.xstep = xstep 
-		self.ystep = ystep 
-		self.scalestep = scalestep 
-		self.min_scale = min_scale 
+		self.canvas_shape = canvas_shape
+		self.xstep = xstep
+		self.ystep = ystep
+		self.scalestep = scalestep
+		self.min_scale = min_scale
 		self.max_scale = max_scale
 		self.position = np.zeros([-(-(canvas_shape[0]-min_scale)//xstep),-(-(canvas_shape[1]-min_scale)//ystep)], dtype=int)
 		self.operation = {'+': 0, '-': 0, '*': 0}

@@ -42,7 +42,7 @@ def randomExp():
 			exp = oplist[opnum] + exp
 		else:
 			stack.pop()
-			operand = genoperand() 
+			operand = genoperand()
 			exp = operand + exp
 		count = count+1
 	return exp
@@ -58,10 +58,10 @@ def fixedSizeExp(numops):
 	for i in range(numops):
 		op = oplist[random.randint(0,2)]
 		exp.append(op)
-	
+
 	if numops==0:
 		return operand[0]
-	
+
 	temp = exp[2:-1]
 	random.shuffle(temp)
 	exp[2:-1] = temp
