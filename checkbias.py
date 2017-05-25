@@ -17,15 +17,16 @@ class stats(object):
 
 	def printstats(self):
 		print("<<<<<<<<< Position >>>>>>>>>> \n")
-		print("  |", end=" ")
+		print("\t|", end="\t")
 		for j in range(self.position.shape[1]):
 			print(j*ystep+min_scale, end="\t")
 		print("")
+		print("__________________", end="")
 		for j in range(self.position.shape[1]):
 			print("________", end="")
 		print("")
 		for i in range(self.position.shape[0]):
-			print(i*xstep+min_scale, '|', end=" ")
+			print(i*xstep+min_scale, '\t|', end="\t")
 			for j in range(self.position.shape[1]):
 				print(self.position[i,j], end="\t")
 			print("\n", end="")
@@ -40,7 +41,7 @@ class stats(object):
 
 		print("\n<<<<<<<<<< Scale >>>>>>>>>>\n")
 		for i in range(self.scale.shape[0]):
-			print(i*self.scalestep+min_scale, self.scale[i])
+			print(i*self.scalestep+min_scale,"\t", self.scale[i])
 		print("\n")
 
 
@@ -62,7 +63,7 @@ class stats(object):
 # shapelist = ['c', 't', 's']
 
 
-filename = '/home/rishabh/Documents/VisProgGen/test/expressions.txt'
+filename = '/home/rishabh/Documents/VisProgGen/images2/expressions.txt'
 datastats = stats(canvas_shape, xstep, ystep, scalestep, min_scale, max_scale)
 
 with open(filename) as f:
