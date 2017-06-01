@@ -8,7 +8,7 @@ from copy import copy
 #%matplotlib inline
 
 
-canvas_shape = [128, 128]
+canvas_shape = [64, 64]
 numpixels = canvas_shape[0]*canvas_shape[1]
 
 class canvas(object):
@@ -117,7 +117,7 @@ class canvas(object):
 		temp = np.sum(self.drawing)
 		self.drawing = np.logical_or(self.drawing, c2.drawing)
 		onpixels = np.sum(self.drawing)
-		if onpixels <= int(1.1*max(temp, np.sum(c2.drawing))) or int(0.8*numpixels) <= onpixels:
+		if onpixels <= int(1.1*max(temp, np.sum(c2.drawing))) or int(0.8*numpixels) <= onpixels or onpixels >= 0.9*(temp+np.sum(c2.drawing)):
 			self.flag = 0
 		return self
 
@@ -164,7 +164,7 @@ class canvas(object):
 
 		#for expression received randomly
 		onpixels = np.sum(self.drawing)
-		if onpixels <= int(0.2*numpixels) or int(0.8*numpixels) <= onpixels:
+		if onpixels <= int(0.1*numpixels) or int(0.8*numpixels) <= onpixels:
 			self.flag = 0
 		if self.flag:
 			a = np.logical_not(self.drawing)

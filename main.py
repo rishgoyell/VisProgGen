@@ -10,44 +10,37 @@ from canvasops import canvas
 
 #pydot_error_chars = ',#:@'
 
-numexs = 500
-numops = 2
+numexs = 5
+numops = 1
 opcolor = {'+': 'yellow', '-': 'red', '*':'blue'}
 
 class Parser(Rules):
     global numexs
-    def __init__(self):
+    def __init__(self, graph = None):
         from token_file import build_lexer
         self.tokens, self.lexer = build_lexer(debug_mode=False)
         self.parser = yacc.yacc(module=self)
         self.successful = True  #set to True as long as parsing is proceeding correctly
-        self.graph = pydot.Dot(graph_type='digraph', bgcolor='#1e5e68')
+        self.graph = graph
         self.nnodes = 0
         self.numdraws = 0
 
 
-    def processFile(self, filename):
-        assert type(filename) is str
-        try:
-            with open(filename, 'rb') as fp:
-                exp = fp.read()
-                print(str(exp)[2:-1])
-                Rules.random = 0
-                Rules.exp = str(exp)[2:-1]  #some feature of python 3.6, introduces b in front of string for some reason
-                self.parser.parse(Rules.exp)
-                if self.successful:
-                    print('Parsing successful for file ' + filename)
-                    if Rules.visualize:
-                        self.plot_parse_tree(filename)      #save the visualization graph
-                        #remove unwanted intermediate canvases
-                        for f in os.listdir(Rules.path):    
-                            if re.search(r'temp[0-9]+', f):
-                                os.remove(os.path.join(Rules.path, f))
+    def processFile(self, exp, count, filename):
+        Rules.random = 0
+        Rules.exp = exp
+        self.parser.parse(Rules.exp)
+        if self.successful:
+            if Rules.visualize:
+                self.plot_parse_tree(filename+'vis'+str(count))      #save the visualization graph
+                #remove unwanted intermediate canvases
+                for f in os.listdir(Rules.path):    
+                    if re.search(r'temp[0-9]+', f):
+                        os.remove(os.path.join(Rules.path, f))
 
-                else:
-                    print('Could not parse ' + filename + ' successfully')
-        except IOError:
-            print("Unable to find " + filename)
+        else:
+            print('Could not parse ' + exp + ' in ' + filename + ' successfully')
+        
 
     def processExp(self, exp):
         #end if num of generated samples equals num of required samples
@@ -105,11 +98,25 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         for i in range(1, len(sys.argv)):
             p1.successful = True
-            p1.processFile(sys.argv[i])
+            print(sys.argv[i])
+            assert type(sys.argv[i]) is str
+            try:
+                fp = open(sys.argv[i], 'r')
+                # if sys.argv[i].endswith('.txt'):
+                #     filename = sys.argv[i][:-4]
+                count = 0
+                for exp in fp:
+                    count = count + 1
+                    p1.graph = pydot.Dot(graph_type='digraph', bgcolor='#1e5e68')
+                    p1.processFile(exp, count, sys.argv[i][:-4])
+            except IOError:
+                print("Unable to find " + sys.argv[i])
+
     else:
         flag = 1
         Rules.visualize = False
+        Rules.filename = open(Rules.path+'expressions.txt', 'w')  #file that stores list of expressions corresonding to all data
         while flag:
             p1.successful = True
-            exp = genexp.fixedSizeExp(numops)
+            exp = genexp.func(numops)
             flag = p1.processExp(exp)

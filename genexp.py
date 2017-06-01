@@ -19,6 +19,7 @@ xlist = range(min_scale, canvas_shape[0], xstep)
 ylist = range(min_scale, canvas_shape[1], ystep)
 scalelist = range(min_scale, max_scale+1, scalestep)
 shapelist = ['c', 't', 's']
+validlist = []
 
 def genoperand():
 	while True:
@@ -27,6 +28,24 @@ def genoperand():
 		scale = str(scalelist[random.randint(0, len(scalelist)-1)])
 		shape = shapelist[random.randint(0, len(shapelist)-1)]
 		return shape + '(' + x + ',' + y + ',' + scale + ')'
+
+def genparenthesis(openp, closep, currstr=""):
+	if openp == 0:
+	    temp = ""
+	    for i in range(closep):
+	        temp = temp + ')'
+	    validlist[len(currstr+temp)//2-1].append(currstr+temp) 
+	    return
+	elif currstr.count(")") > currstr.count("("):
+	    return
+	genparenthesis(openp-1, closep, currstr+'(')
+	genparenthesis(openp, closep-1, currstr+')')
+	return
+
+def createparendatastructure(maxops):
+	for i in range(maxops):
+		validlist.append([])
+		genparenthesis(i+1, i+1)
 
 
 def randomExp():
@@ -37,7 +56,7 @@ def randomExp():
 		#2 ensures that expressions with 1 operand are not generated
 		#count increases the probability of choosing a terminal as the expression becomes larger
 		opnum = random.randint(0,2+count)
-		if opnum in range(2):
+		if opnum in range(3):
 			stack.append('E')
 			exp = oplist[opnum] + exp
 		else:
@@ -67,6 +86,19 @@ def fixedSizeExp(numops):
 	exp[2:-1] = temp
 	for i in range(len(exp)):
 		expstring = expstring + exp[i]
+	return expstring
+
+def func(numops):
+	if validlist == []:
+		createparendatastructure(5)
+		print("check")
+	expstring = genoperand()
+	exptype = random.randint(0, len(validlist[numops-1])-1)
+	for p in validlist[numops-1][exptype]:
+		if p == '(':
+			expstring = expstring + genoperand()
+		else:
+			expstring = expstring + oplist[random.randint(0,2)]
 	return expstring
 
 

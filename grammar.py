@@ -4,8 +4,7 @@ import numpy as np
 
 class Rules(object):
     numgen = 0      #keeps count of number of valid expressions generated
-    path = '/home/rishabh/Documents/VisProgGen/test/'
-    filename = open(path+'expressions.txt', 'w')  #file that stores list of expressions corresonding to all data
+    path = '/home/rishabh/Documents/VisProgGen/'
     exp = None        #the expression being parsed
     random = 1        #set to 1 if random expressionas are being generated and 0  if expression is provided
     visualize = True     #visualize expressions as a tree
@@ -69,5 +68,5 @@ class Rules(object):
             print("Error "+ str(p.type) + " found at line " + str(p.lineno) + " at position " + str( p.lexpos))
             parser.errok()
         except:
-            print('Unknown error')
+            print('Error')
 

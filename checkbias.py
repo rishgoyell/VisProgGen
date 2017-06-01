@@ -3,7 +3,7 @@ import numpy as np
 from genexp import canvas_shape, xstep, ystep, scalestep, min_scale, max_scale, oplist, xlist, ylist, scalelist, shapelist
 
 class stats(object):
-	def __init__(self, canvas_shape, xstep, ystep, scalestep, min_scale, max_scale):
+	def __init__(self, canvas_shape, xstep, ystep, scalestep, min_scale, max_scale, randlen=0):
 		self.canvas_shape = canvas_shape 
 		self.xstep = xstep 
 		self.ystep = ystep 
@@ -14,6 +14,8 @@ class stats(object):
 		self.operation = {'+': 0, '-': 0, '*': 0}
 		self.shape = {'c': 0,'t': 0,'s': 0}
 		self.scale = np.zeros(-(-(max_scale-min_scale+1)//scalestep), dtype=int)
+		self.randlen = randlen
+		self.numops = {}
 
 	def printstats(self):
 		print("<<<<<<<<< Position >>>>>>>>>> \n")
@@ -44,6 +46,11 @@ class stats(object):
 			print(i*self.scalestep+min_scale,"\t", self.scale[i])
 		print("\n")
 
+		if self.randlen:
+			print("\n<<<<<<<< length >>>>>>>>>\n")
+			for i in self.numops.keys():
+				print(i, self.numops[i])
+
 
 
 
@@ -62,9 +69,10 @@ class stats(object):
 # scalelist = range(min_scale, max_scale+1, scalestep)
 # shapelist = ['c', 't', 's']
 
+randlen = 1
+filename = '/home/rishabh/Documents/VisProgGen/test/expressions.txt'
+datastats = stats(canvas_shape, xstep, ystep, scalestep, min_scale, max_scale, randlen=randlen)
 
-filename = '/home/rishabh/Documents/VisProgGen/images2/expressions.txt'
-datastats = stats(canvas_shape, xstep, ystep, scalestep, min_scale, max_scale)
 
 with open(filename) as f:
 	for line in f:
@@ -77,4 +85,32 @@ with open(filename) as f:
 		for x in xlist:
 			for y in ylist:
 				datastats.position[(x-min_scale)//xstep,(y-min_scale)//ystep] += line.count('('+str(x)+','+str(y)+',')
+		if randlen:
+			numops = 0
+			for op in oplist:
+				numops += line.count(op)
+			if str(numops) in datastats.numops.keys():
+				datastats.numops[str(numops)] += 1
+			else:
+				datastats.numops[str(numops)] = 1
+
+
 datastats.printstats()
+
+# count = 0
+# linenum = 0
+# linelist = []
+
+# with open(filename) as f:
+# 	for line in f:
+# 		linenum += 1
+# 		with open(filename) as f:
+# 			for lineiter in f:
+# 				if lineiter == line:
+# 					linelist.append(linenum)
+# 					count = count + 1
+
+# for item in linelist:
+# 	print(item, end= " ")
+
+# print(count)
