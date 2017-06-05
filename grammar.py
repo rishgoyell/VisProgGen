@@ -6,10 +6,10 @@ import ply.yacc as yacc
 
 class Rules(object):
     numgen = 0      #keeps count of number of valid expressions generated
-    path = '/home/rishabh/Documents/VisProgGen/images1'
+    path = '/home/rishabh/Documents/VisProgGen/images2'
     exp = None        #the expression being parsed
     random = 0        #set to 1 if random expressionas are being generated and 0  if expression is provided
-    visualize = True     #visualize expressions as a tree
+    visualize = False     #visualize expressions as a tree
 
     def p_S(self, p ):
         '''S : E
@@ -67,7 +67,7 @@ class Rules(object):
     def p_error(self, p):
         try:
             self.successful = False
-            print("Error "+ str(p.type) + " found at line " + str(p.lineno) + " at position " + str( p.lexpos))
+            #print("Error "+ str(p.type) + " found at line " + str(p.lineno) + " at position " + str( p.lexpos))
             if Rules.random == 0:
                 Rules.numgen += 1
                 w = canvas()
@@ -75,4 +75,3 @@ class Rules(object):
             #self.parser.errok()
         except:
             print('Error. Please check, you may not receive the right metrics if you run metrics.py on the generated images.')
-

@@ -9,12 +9,13 @@ from skimage import feature
 from scipy.spatial.distance import cdist
 from scipy.spatial.distance import directed_hausdorff
 
-# preddir = '/home/rishabh/Downloads/visualisations/wrongGT'
-# gtdir = '/home/rishabh/Downloads/visualisations/wrongprog'
-preddir = 'abc/sc'
-gtdir = 'abc/bc'
+gtdir = '/home/rishabh/Downloads/visualisations/wrongGT'
+preddir = '/home/rishabh/Downloads/visualisations/wrongprog'
+# preddir = 'abc/sc'
+# gtdir = 'abc/bc'
 wrongexp = 'fixed'
 numimages = 0
+numwrongexps = 0
 mse = 0
 hausdist = 0
 chamferdist = 0
@@ -43,6 +44,11 @@ def chamferfunc(arr1, arr2):
 	x, y = np.nonzero(arr2)
 	ind_2 = np.array([x.reshape(-1), y.reshape(-1)]).transpose()
 
+	if ind_1.shape[0]==0 and ind_2.shape[0]==0:
+		return 0
+	elif ind_1.shape[0]==0 or ind_2.shape[0]==0:
+		return canvas_shape[0]
+
 	D = cdist(ind_1, ind_2, 'euclidean')
 	d = (np.sum(np.min(D, axis=0)) + np.sum(np.min(D, axis=1))) / (ind_1.shape[0] + ind_2.shape[0])
 	return d
@@ -70,9 +76,11 @@ for filename in os.listdir(gtdir):
 			predimage = misc.imread(preddir + '/' + filename)
 			predimage = (predimage[:,:,0]==0)
 		else:
+			numwrongexps += 1
 			errflag = True
 			predimage = misc.imread(preddir + '/err' + filename)
 			predimage = (predimage[:,:,0]==0)
 		updatedist(predimage, gtimage, errflag)
 
 print('MSE:', mse/numimages, '\nAvg Hausdorff Distance:',hausdist/numimages, '\nAvg Chamfer Distance:',chamferdist/numimages)
+print(str(numwrongexps) + ' wrong expressions out of ' + str(numimages))

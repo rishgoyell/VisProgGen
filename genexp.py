@@ -100,6 +100,3 @@ def fixedSizeExp(numops):
 		else:
 			expstring = expstring + oplist[random.randint(0,2)]
 	return expstring
-
-
-

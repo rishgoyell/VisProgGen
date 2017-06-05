@@ -117,7 +117,7 @@ class canvas(object):
 		temp = np.sum(self.drawing)
 		self.drawing = np.logical_or(self.drawing, c2.drawing)
 		onpixels = np.sum(self.drawing)
-		if onpixels <= int(1.1*max(temp, np.sum(c2.drawing))) or int(0.8*numpixels) <= onpixels or onpixels >= 0.9*(temp+np.sum(c2.drawing)):
+		if onpixels <= int(1.1*max(temp, np.sum(c2.drawing))) or int(0.8*numpixels) <= onpixels: #or onpixels >= 0.9*(temp+np.sum(c2.drawing)):
 			self.flag = 0
 		return self
 
