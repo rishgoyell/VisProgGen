@@ -25,22 +25,22 @@ class canvas(object):
 
 
 	################# DRAW CIRCLE ################
-	def draw_circle(self, center: List, radius: int):	
+	def draw_circle(self, center: List, radius: int, randflag):	
 		arr = self.drawing
 		xp = [center[0]+radius, center[0], center[0], center[0]-radius]
 		yp = [center[1], center[1]+radius, center[1]-radius, center[1]]
 		for i, j in zip(xp, yp):
-			if not self.inside_canvas([i, j]):
+			if not self.inside_canvas([i, j]) and randflag:
 				self.flag = 0
 				return None
-		rr, cc = draw.circle(*center, radius=radius)
+		rr, cc = draw.circle(*center, radius=radius, shape=canvas_shape)
 		arr[cc, rr] = True
 		self.drawing = arr
 		return 1
 
 
 	################# DRAW TRIANGLE ################
-	def draw_triangle(self, center: List, length: int):
+	def draw_triangle(self, center: List, length: int, randflag):
 		arr = self.drawing
 		length = 1.732 * length
 		rows = [
@@ -50,11 +50,11 @@ class canvas(object):
 		cols = [int(center[0] - length / 2.0), int(center[0] + length / 2.0), center[0]]
 
 		for i, j in zip(rows, cols):
-			if not self.inside_canvas([i, j]):
+			if not self.inside_canvas([i, j]) and randflag:
 				self.flag = 0
 				return None
 
-		rr_inner, cc_inner = draw.polygon(rows, cols)
+		rr_inner, cc_inner = draw.polygon(rows, cols, shape=canvas_shape)
 		rr_boundary, cc_boundary = draw.polygon_perimeter(
 		rows, cols, shape=canvas_shape)
 
@@ -66,7 +66,7 @@ class canvas(object):
 
 
 	################# DRAW SQUARE #################
-	def draw_square(self, center: list, length: int):
+	def draw_square(self, center: list, length: int, randflag):
 		arr = self.drawing
 		length *= 1.412
 		# generate the row vertices
@@ -80,13 +80,13 @@ class canvas(object):
 		])
 
 		for i, j in zip(rows, cols):
-			if not self.inside_canvas([i, j]):
+			if not self.inside_canvas([i, j]) and randflag:
 				self.flag = 0
 				return None
 
 		# generate the col vertices
-		rr_inner, cc_inner = draw.polygon(rows, cols)
-		rr_boundary, cc_boundary = draw.polygon_perimeter(rows, cols)
+		rr_inner, cc_inner = draw.polygon(rows, cols, shape=canvas_shape)
+		rr_boundary, cc_boundary = draw.polygon_perimeter(rows, cols, shape=canvas_shape)
 
 		ROWS = np.concatenate((rr_inner, rr_boundary))
 		COLS = np.concatenate((cc_inner, cc_boundary))
@@ -163,10 +163,10 @@ class canvas(object):
 			plt.imsave(filename+'.png', np.array(a).reshape(canvas_shape[0], canvas_shape[1]), cmap=cm.gray)			
 
 		#for expression received randomly
-		onpixels = np.sum(self.drawing)
-		if onpixels <= int(0.1*numpixels) or int(0.8*numpixels) <= onpixels:
-			self.flag = 0
-		if self.flag:
-			a = np.logical_not(self.drawing)
-			plt.imsave(filename +'.png', np.array(a).reshape(canvas_shape[0], canvas_shape[1]), cmap=cm.gray)
-
+		else:
+			onpixels = np.sum(self.drawing)
+			if onpixels <= int(0.1*numpixels) or int(0.8*numpixels) <= onpixels:
+				self.flag = 0
+			if self.flag:
+				a = np.logical_not(self.drawing)
+				plt.imsave(filename +'.png', np.array(a).reshape(canvas_shape[0], canvas_shape[1]), cmap=cm.gray)

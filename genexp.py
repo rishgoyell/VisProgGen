@@ -68,7 +68,7 @@ def randomExp():
 
 
 #this function works for numops = 0,1,2 only
-def fixedSizeExp(numops):
+def fixedSizeExpLim(numops):
 	exp = []
 	expstring = ''
 	for i in range(numops+1):
@@ -88,7 +88,7 @@ def fixedSizeExp(numops):
 		expstring = expstring + exp[i]
 	return expstring
 
-def func(numops):
+def fixedSizeExp(numops):
 	if validlist == []:
 		createparendatastructure(5)
 		print("check")
