@@ -104,8 +104,8 @@ datastats.printstats()
 # with open(filename) as f:
 # 	for line in f:
 # 		linenum += 1
-# 		with open(filename) as f:
-# 			for lineiter in f:
+# 		with open(filename) as g:
+# 			for lineiter in g:
 # 				if lineiter == line:
 # 					linelist.append(linenum)
 # 					count = count + 1

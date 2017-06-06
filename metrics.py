@@ -11,14 +11,14 @@ from scipy.spatial.distance import directed_hausdorff
 
 
 #change according to requirement
-wrongpolicy = 'blancan'
-gtdir = '/home/rishabh/Downloads/visualisations/wrongGT'
-preddir = '/home/rishabh/Downloads/visualisations/wrongprog'
 
+wrongpolicylist = ['fixed','balncan', 'ignore']
 
 class Evaluate(object):
 
-	def __init__(self, wrongpolicy='fixed'):
+	def __init__(self, gtdir, preddir, wrongpolicy='fixed'):
+		self.gtdir = gtdir
+		self.preddir = preddir
 		self.mse = 0
 		self.hausdist = 0
 		self.chamferdist = 0
@@ -61,15 +61,15 @@ class Evaluate(object):
 
 	def updatedist(self, predimage, gtimage, errflag):
 		global mse, hausdist, chamferdist
-		if wrongpolicy=='blancan' or not errflag:
+		if self.wrongpolicy=='blancan' or not errflag:
 			self.mse += self.msefunc(predimage, gtimage)
 			self.hausdist += self.hausfunc(predimage, gtimage)
 			self.chamferdist += self.chamferfunc(predimage, gtimage)
-		elif wrongpolicy=='fixed':
+		elif self.wrongpolicy=='fixed':
 			self.mse += canvas_shape[0]*canvas_shape[1]
 			self.hausdist += 64
 			self.chamferdist += 64
-		elif wrongpolicy=='ignore':
+		elif self.wrongpolicy=='ignore':
 			return
 
 
@@ -79,19 +79,19 @@ class Evaluate(object):
 		self.mse = 0
 		self.hausdist = 0
 		self.chamferdist = 0
-		for filename in os.listdir(gtdir):
+		for filename in os.listdir(self.gtdir):
 			errflag = False
 			if filename.endswith('.png'):
 				self.numimages += 1
-				gtimage = misc.imread(gtdir + '/' + filename)
+				gtimage = misc.imread(self.gtdir + '/' + filename)
 				gtimage = (gtimage[:,:,0]==0)
-				if os.path.isfile(preddir + '/' + filename):
-					predimage = misc.imread(preddir + '/' + filename)
+				if os.path.isfile(self.preddir + '/' + filename):
+					predimage = misc.imread(self.preddir + '/' + filename)
 					predimage = (predimage[:,:,0]==0)
 				else:
 					self.numwrongexps += 1
 					errflag = True
-					predimage = misc.imread(preddir + '/err' + filename)
+					predimage = misc.imread(self.preddir + '/err' + filename)
 					predimage = (predimage[:,:,0]==0)
 				self.updatedist(predimage, gtimage, errflag)
 
@@ -102,5 +102,10 @@ class Evaluate(object):
 
 
 if __name__ == '__main__':
-	e = Evaluate(wrongpolicy)
-	e.evalfunc()
+	gtdir = '/home/rishabh/Downloads/visualisations/wrongGT'
+	preddir = '/home/rishabh/Downloads/visualisations/wrongprog'
+	e = Evaluate(gtdir, preddir)
+	for x in wrongpolicylist:
+		print("------------- "+x+" -------------")
+		e.wrongpolicy = x
+		e.evalfunc()
