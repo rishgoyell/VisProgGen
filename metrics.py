@@ -9,9 +9,12 @@ from skimage import feature
 from scipy.spatial.distance import cdist
 from scipy.spatial.distance import directed_hausdorff
 
-wrongpolicy = 'ignore'
+
+#change according to requirement
+wrongpolicy = 'blancan'
 gtdir = '/home/rishabh/Downloads/visualisations/wrongGT'
 preddir = '/home/rishabh/Downloads/visualisations/wrongprog'
+
 
 class Evaluate(object):
 
@@ -92,9 +95,12 @@ class Evaluate(object):
 					predimage = (predimage[:,:,0]==0)
 				self.updatedist(predimage, gtimage, errflag)
 
+		if self.wrongpolicy == 'ignore':
+			self.numimages = self.numimages - self.numwrongexps
 		print('Pixel-level accuracy:', 100-self.mse*100/(canvas_shape[0]*canvas_shape[1]*self.numimages), '\nMSE:', self.mse/self.numimages, '\nAvg Hausdorff Distance:',self.hausdist/self.numimages, '\nAvg Chamfer Distance:',self.chamferdist/self.numimages)
 		print(str(self.numwrongexps) + ' wrong expressions out of ' + str(self.numimages))
 
 
-e = Evaluate(wrongpolicy)
-e.evalfunc()
+if __name__ == '__main__':
+	e = Evaluate(wrongpolicy)
+	e.evalfunc()

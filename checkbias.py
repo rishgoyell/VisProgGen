@@ -70,7 +70,7 @@ class stats(object):
 # shapelist = ['c', 't', 's']
 
 randlen = 1
-filename = '/home/rishabh/Documents/VisProgGen/test/expressions.txt'
+filename = '/home/rishabh/Documents/VisProgGen/images1/expressions.txt'
 datastats = stats(canvas_shape, xstep, ystep, scalestep, min_scale, max_scale, randlen=randlen)
 
 
