@@ -9,9 +9,6 @@ from skimage import feature
 from scipy.spatial.distance import cdist
 from scipy.spatial.distance import directed_hausdorff
 
-
-#change according to requirement
-
 wrongpolicylist = ['fixed','balncan', 'ignore']
 
 class Evaluate(object):
@@ -97,13 +94,13 @@ class Evaluate(object):
 
 		if self.wrongpolicy == 'ignore':
 			self.numimages = self.numimages - self.numwrongexps
-		print('Pixel-level accuracy:', 100-self.mse*100/(canvas_shape[0]*canvas_shape[1]*self.numimages), '\nMSE:', self.mse/self.numimages, '\nAvg Hausdorff Distance:',self.hausdist/self.numimages, '\nAvg Chamfer Distance:',self.chamferdist/self.numimages)
+		print('Pixel-level accuracy:', 100-self.mse*100/(canvas_shape[0]*canvas_shape[1]*self.numimages), '\nMean Error:', self.mse/self.numimages, '\nAvg Hausdorff Distance:',self.hausdist/self.numimages, '\nAvg Chamfer Distance:',self.chamferdist/self.numimages)
 		print(str(self.numwrongexps) + ' wrong expressions out of ' + str(self.numimages))
 
 
 if __name__ == '__main__':
-	gtdir = '/home/rishabh/Downloads/visualisations/wrongGT'
-	preddir = '/home/rishabh/Downloads/visualisations/wrongprog'
+	gtdir = '/home/rishabh/Downloads/visualisations/xyz'
+	preddir = '/home/rishabh/Downloads/visualisations/yxz'
 	e = Evaluate(gtdir, preddir)
 	for x in wrongpolicylist:
 		print("------------- "+x+" -------------")
