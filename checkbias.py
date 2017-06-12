@@ -63,7 +63,7 @@ class stats(object):
 # shapelist = ['c', 't', 's']
 
 
-filename = '/media/rishabh/Seagate Expansion Drive/oneopdata/expressions1'
+filename = '/home/rishabh/Documents/VisProgGen/test/expressions.txt'
 datastats = stats(canvas_shape, xstep, ystep, scalestep, min_scale, max_scale)
 
 with open(filename) as f:

@@ -10,8 +10,8 @@ from canvasops import canvas
 
 #pydot_error_chars = ',#:@'
 
-numexs = 50000
-numops = 1
+numexs = 500
+numops = 2
 opcolor = {'+': 'yellow', '-': 'red', '*':'blue'}
 
 class Parser(Rules):
