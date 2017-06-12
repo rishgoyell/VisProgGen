@@ -13,7 +13,7 @@ wrongpolicylist = ['fixed','balncan', 'ignore']
 
 class Evaluate(object):
 
-	def __init__(self, gtdir, preddir, wrongpolicy='fixed'):
+	def __init__(self, gtdir=None, preddir=None, wrongpolicy='fixed'):
 		self.gtdir = gtdir
 		self.preddir = preddir
 		self.mse = 0

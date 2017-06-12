@@ -1,3 +1,18 @@
+# canvas_shape = [64, 64]
+# xstep = canvas_shape[0]//8
+# ystep = canvas_shape[1]//8
+# scalestep = 4
+# min_scale = 8
+# max_scale = canvas_shape[0]//2
+# oplist = ['+', '-', '*']
+# xlist = range(min_scale, canvas_shape[0], xstep)
+# ylist = range(min_scale, canvas_shape[1], ystep)
+# scalelist = range(min_scale, max_scale+1, scalestep)
+# shapelist = ['c', 't', 's']
+
+
+# Change the variable filename to get stats for a particualr set of generated expression
+
 import os,sys
 import numpy as np
 from genexp import canvas_shape, xstep, ystep, scalestep, min_scale, max_scale, oplist, xlist, ylist, scalelist, shapelist
@@ -52,25 +67,8 @@ class stats(object):
 				print(i, self.numops[i])
 
 
-
-
-# canvas_shape = [64, 64]
-
-# xstep = canvas_shape[0]//8
-# ystep = canvas_shape[1]//8
-# scalestep = 4
-
-# min_scale = 8
-# max_scale = canvas_shape[0]//2
-
-# oplist = ['+', '-', '*']
-# xlist = range(min_scale, canvas_shape[0], xstep)
-# ylist = range(min_scale, canvas_shape[1], ystep)
-# scalelist = range(min_scale, max_scale+1, scalestep)
-# shapelist = ['c', 't', 's']
-
 randlen = 1
-filename = '/home/rishabh/Documents/VisProgGen/images2/expressions.txt'
+filename = '/home/rishabh/Documents/VisProgGen/images1/expressions.txt'
 datastats = stats(canvas_shape, xstep, ystep, scalestep, min_scale, max_scale, randlen=randlen)
 
 
@@ -97,20 +95,20 @@ with open(filename) as f:
 
 datastats.printstats()
 
-# count = 0
-# linenum = 0
-# linelist = []
+count = 0
+linenum = 0
+linelist = []
 
-# with open(filename) as f:
-# 	for line in f:
-# 		linenum += 1
-# 		with open(filename) as g:
-# 			for lineiter in g:
-# 				if lineiter == line:
-# 					linelist.append(linenum)
-# 					count = count + 1
+with open(filename) as f:
+	for line in f:
+		linenum += 1
+		with open(filename) as g:
+			for lineiter in g:
+				if lineiter == line:
+					linelist.append(linenum)
+					count = count + 1
 
-# for item in linelist:
-# 	print(item, end= " ")
+for item in linelist:
+	print(item, end= " ")
 
 print(count)
