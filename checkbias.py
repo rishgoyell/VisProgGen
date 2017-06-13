@@ -101,14 +101,24 @@ linelist = []
 
 with open(filename) as f:
 	for line in f:
-		linenum += 1
-		with open(filename) as g:
-			for lineiter in g:
-				if lineiter == line:
-					linelist.append(linenum)
-					count = count + 1
+		linelist.append(line)
+flaglist = np.zeros(len(linelist))
+fp = open(os.path.dirname(filename)+'/samexp.txt', 'w')
 
-for item in linelist:
-	print(item, end= " ")
+for i in range(len(linelist)):
+	if flaglist[i] == 1:
+		break
+	temp = []
+	for j in range(i+1,len(linelist)):
+		if linelist[i] == linelist[j]:
+			temp.append(j)
+			count = count + 1
+			flaglist[i] = 1
+			flaglist[j] = 1
+	if temp != []:
+		fp.write(str(i))
+		for item in temp:
+			fp.write(',' + str(item))
+		fp.write('\n')
 
 print(count)
