@@ -6,21 +6,21 @@ import ply.yacc as yacc
 
 class Rules(object):
     numgen = 0      #keeps count of number of valid expressions generated
-    path = '/home/rishabh/Documents/VisProgGen/images2'
+    path = '/home/rishabh/Documents/VisProgGen/test3'
     exp = None        #the expression being parsed
     random = 0        #set to 1 if random expressionas are being generated and 0  if expression is provided
-    visualize = False     #visualize expressions as a tree
+    visualize = True     #visualize expressions as a tree
 
     def p_S(self, p ):
         '''S : E
         '''
         p[1].save(Rules.path+'/'+str(Rules.numgen+1), Rules.random)
-        
+
         if p[1].flag:
             Rules.numgen = Rules.numgen + 1
             if Rules.random:
                 Rules.filename.write(Rules.exp+"\n")
-    
+
     def p_E1(self, p):
         '''E  : E E UNION
         '''
@@ -28,7 +28,7 @@ class Rules(object):
         if Rules.visualize:
             self.makenode(p)
 
-    
+
     def p_E2(self, p):
         '''E : E E DIFFERENCE
         '''

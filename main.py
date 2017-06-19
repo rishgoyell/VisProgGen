@@ -8,8 +8,8 @@ import pydot
 from canvasops import canvas
 
 
-numexs = 100000
-numops = 2
+numexs = 25000
+numops = 3
 opcolor = {'+': 'yellow', '-': 'red', '*':'blue'}
 
 class Parser(Rules):
@@ -34,10 +34,10 @@ class Parser(Rules):
             print('Could not parse expression number '+ str(count) + ': ' + exp)
 
         #remove unwanted intermediate canvases
-        for f in os.listdir(Rules.path):    
+        for f in os.listdir(Rules.path):
             if re.search(r'temp[0-9]+', f):
                 os.remove(os.path.join(Rules.path, f))
-        
+
 
     def processExp(self, exp):
         #end if num of generated samples equals num of required samples
@@ -69,19 +69,19 @@ class Parser(Rules):
         self.numdraws = self.numdraws+1
 
         if len(p) == 4:
-            parent = pydot.Node(parent_id, style="filled", fillcolor=opcolor[p[3]], shape='square', image=tempimage+'.png', fontcolor='transparent')
+            parent = pydot.Node(parent_id, shape='square', image=tempimage+'.png', fontcolor='transparent')
             self.graph.add_node(parent)
-            self.graph.add_edge(pydot.Edge(parent_id, p[1].nodeID, fontcolor=opcolor[p[3]], label=p[3]))
-            self.graph.add_edge(pydot.Edge(parent_id, p[2].nodeID))
+            self.graph.add_edge(pydot.Edge(p[1].nodeID, parent_id, fontsize='30',label=p[3]))
+            self.graph.add_edge(pydot.Edge(p[2].nodeID, parent_id))
         else:
-            parent = pydot.Node(parent_id, style="filled", fontcolor='transparent', shape='square', image=tempimage+'.png')
+            parent = pydot.Node(parent_id, fontcolor='transparent', shape='square', image=tempimage+'.png')
             self.graph.add_node(parent)
         p[0].nodeID = parent_id
 
 
     def plot_parse_tree(self, filename):
         # self.graph.write_dot(filename + '.dot')
-        self.graph.write_ps(filename + '.ps')
+        self.graph.write_png(filename + '.png')
 
     def get_unique_id(self):
         self.nnodes += 1
@@ -106,7 +106,7 @@ if __name__ == '__main__':
                 count = 0
                 for exp in fp:
                     count = count + 1
-                    p1.graph = pydot.Dot(graph_type='digraph', bgcolor='#1e5e68')
+                    p1.graph = pydot.Dot(graph_type='digraph')
                     p1.successful = True
                     p1.processFile(exp, count)
             except IOError:

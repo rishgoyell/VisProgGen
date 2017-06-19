@@ -10,14 +10,14 @@
 import os, sys
 import numpy as np
 import math
-numtables = 6
+numtables = 4
 
-def genhtml(gtlist, gtdir, preddir, predlist=None, numexs=240, vistree=False):
+def genhtml(gtlist, gtdir, preddir, predlist=None, numexs=1000, vistree=False):
 	if predlist == None:
 		predlist = gtlist
 	assert len(predlist) == len(gtlist)
 	randind = np.random.permutation(range(len(gtlist)))[:numexs]
-	filepath = os.path.dirname(preddir)+'/results.html'
+	filepath = os.path.dirname(preddir)+'/index.html'
 	fp = open(filepath, 'w')
 	fp.write('''
 			<!DOCTYPE html>
@@ -27,33 +27,43 @@ def genhtml(gtlist, gtdir, preddir, predlist=None, numexs=240, vistree=False):
 			<title>Randomly Sampled Examples</title>
 			</head>
 			<body>
+			<h2>Stack with previous step information</h2>
 			''')
 	exspertable = math.ceil(numexs/numtables)
-	
+	count = 0
 	for i in range(numtables):
 		fp.write('''
 			<table width="200" border="5" style="float:left;">
 			<tr>
+			<th>S.No.</th>
 			<th>GROUND TRUTH</th>
 			<th>PREDICTED IMAGE</th>
 			</tr>
 			''')
 		for j in range(i*exspertable, min((i+1)*exspertable, numexs)):
+			count = count+1
 			fp.write('''
 				<tr>
-				<td> <img src=''' + gtdir + '/' + gtlist[randind[j]]+ ' alt='+ gtlist[randind[j]]+ ' height="142" width="142"> </td>'
-				+'<td> <img src=' + preddir+'/'+predlist[randind[j]]+ ' alt='+ predlist[randind[j]]+ ''' height="142" width="142"> </td>
+				<td>'''+ str(count) + '</td><td><img src=''' + gtdir + '/' + gtlist[randind[j]]+ ' alt='+ gtlist[randind[j]]+' height="325" width="195"/> </td>'
+				+'<td> <img src=' + preddir+'/'+predlist[randind[j]]+ ' alt='+ predlist[randind[j]] + ''' height="325" width="195"/> </td>
 				</tr>''')
 
 
 if __name__ == '__main__':
-	gtdir = "/home/rishabh/Documents/experiment/3step/test"
-	preddir = "/home/rishabh/Documents/experiment/3step/train"
-	fp = open("/home/rishabh/Documents/experiment/3step/result.txt", 'r')
+	gtdir = "/home/rishabh/Downloads/tmp/gt"
+	preddir = "/home/rishabh/Downloads/tmp/pred"
+	# fp = open("/home/rishabh/Documents/experiment/3step/result.txt", 'r')
 	gtlist = []
 	predlist = []
-	for line in fp:
-		temp = line.strip('\n').split(', ')
-		gtlist.append(temp[0])
-		predlist.append(temp[1])
+	for filename in os.listdir(gtdir):
+		if ".png" in filename and 'vis'in filename:
+			gtlist.append(filename)
+			if os.path.isfile(preddir+'/'+filename):
+				predlist.append(filename)
+			else:
+				predlist.append('Error')
+	# for line in fp:
+	# 	temp = line.strip('\n').split(', ')
+	# 	gtlist.append(temp[0])
+	# 	predlist.append(temp[1])
 	genhtml(gtlist, gtdir, preddir, predlist=predlist)

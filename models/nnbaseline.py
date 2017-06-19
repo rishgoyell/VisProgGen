@@ -61,8 +61,8 @@ class nnbase(object):
 						"\nChamfer:"+str(self.avgerror[2]/self.numtest))
 
 if __name__=='__main__':
-	traindir = '/home/rishabh/Documents/experiment/3step/train'
-	testdir = '/home/rishabh/Documents/experiment/3step/test'
+	traindir = '/home/rishabh/Documents/experiment/2step/train'
+	testdir = '/home/rishabh/Documents/experiment/2step/test'
 	nnbase = nnbase(traindir, testdir)
 	nnbase.findexp()
 
