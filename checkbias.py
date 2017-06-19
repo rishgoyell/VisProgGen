@@ -1,19 +1,36 @@
+# canvas_shape = [64, 64]
+# xstep = canvas_shape[0]//8
+# ystep = canvas_shape[1]//8
+# scalestep = 4
+# min_scale = 8
+# max_scale = canvas_shape[0]//2
+# oplist = ['+', '-', '*']
+# xlist = range(min_scale, canvas_shape[0], xstep)
+# ylist = range(min_scale, canvas_shape[1], ystep)
+# scalelist = range(min_scale, max_scale+1, scalestep)
+# shapelist = ['c', 't', 's']
+
+
+# Change the variable filename to get stats for a particualr set of generated expression
+
 import os,sys
 import numpy as np
 from genexp import canvas_shape, xstep, ystep, scalestep, min_scale, max_scale, oplist, xlist, ylist, scalelist, shapelist
 
 class stats(object):
-	def __init__(self, canvas_shape, xstep, ystep, scalestep, min_scale, max_scale):
-		self.canvas_shape = canvas_shape
-		self.xstep = xstep
-		self.ystep = ystep
-		self.scalestep = scalestep
-		self.min_scale = min_scale
+	def __init__(self, canvas_shape, xstep, ystep, scalestep, min_scale, max_scale, randlen=0):
+		self.canvas_shape = canvas_shape 
+		self.xstep = xstep 
+		self.ystep = ystep 
+		self.scalestep = scalestep 
+		self.min_scale = min_scale 
 		self.max_scale = max_scale
 		self.position = np.zeros([-(-(canvas_shape[0]-min_scale)//xstep),-(-(canvas_shape[1]-min_scale)//ystep)], dtype=int)
 		self.operation = {'+': 0, '-': 0, '*': 0}
 		self.shape = {'c': 0,'t': 0,'s': 0}
 		self.scale = np.zeros(-(-(max_scale-min_scale+1)//scalestep), dtype=int)
+		self.randlen = randlen
+		self.numops = {}
 
 	def printstats(self):
 		print("<<<<<<<<< Position >>>>>>>>>> \n")
@@ -44,27 +61,16 @@ class stats(object):
 			print(i*self.scalestep+min_scale,"\t", self.scale[i])
 		print("\n")
 
+		if self.randlen:
+			print("\n<<<<<<<< length >>>>>>>>>\n")
+			for i in self.numops.keys():
+				print(i, self.numops[i])
 
 
+randlen = 1
+filename = '/home/rishabh/Documents/VisProgGen/test3/expressions.txt'
+datastats = stats(canvas_shape, xstep, ystep, scalestep, min_scale, max_scale, randlen=randlen)
 
-# canvas_shape = [64, 64]
-
-# xstep = canvas_shape[0]//8
-# ystep = canvas_shape[1]//8
-# scalestep = 4
-
-# min_scale = 8
-# max_scale = canvas_shape[0]//2
-
-# oplist = ['+', '-', '*']
-# xlist = range(min_scale, canvas_shape[0], xstep)
-# ylist = range(min_scale, canvas_shape[1], ystep)
-# scalelist = range(min_scale, max_scale+1, scalestep)
-# shapelist = ['c', 't', 's']
-
-
-filename = '/home/rishabh/Documents/VisProgGen/test/expressions.txt'
-datastats = stats(canvas_shape, xstep, ystep, scalestep, min_scale, max_scale)
 
 with open(filename) as f:
 	for line in f:
@@ -77,4 +83,42 @@ with open(filename) as f:
 		for x in xlist:
 			for y in ylist:
 				datastats.position[(x-min_scale)//xstep,(y-min_scale)//ystep] += line.count('('+str(x)+','+str(y)+',')
+		if randlen:
+			numops = 0
+			for op in oplist:
+				numops += line.count(op)
+			if str(numops) in datastats.numops.keys():
+				datastats.numops[str(numops)] += 1
+			else:
+				datastats.numops[str(numops)] = 1
+
+
 datastats.printstats()
+
+count = 0
+linenum = 0
+linelist = []
+
+with open(filename) as f:
+	for line in f:
+		linelist.append(line)
+flaglist = np.zeros(len(linelist))
+fp = open(os.path.dirname(filename)+'/samexp.txt', 'w')
+
+for i in range(len(linelist)):
+	if flaglist[i] == 1:
+		break
+	temp = []
+	for j in range(i+1,len(linelist)):
+		if linelist[i] == linelist[j]:
+			temp.append(j)
+			count = count + 1
+			flaglist[i] = 1
+			flaglist[j] = 1
+	if temp != []:
+		fp.write(str(i))
+		for item in temp:
+			fp.write(',' + str(item))
+		fp.write('\n')
+
+print(count)

@@ -1,24 +1,25 @@
 from canvasops import canvas
 import numpy as np
+import ply.lex as lex
+import ply.yacc as yacc
 
 
 class Rules(object):
     numgen = 0      #keeps count of number of valid expressions generated
-    path = '/home/rishabh/Documents/VisProgGen/test/'
-    filename = open(path+'expressions.txt', 'w')  #file that stores list of expressions corresonding to all data
+    path = '/home/rishabh/Documents/VisProgGen/test3'
     exp = None        #the expression being parsed
-    random = 1        #set to 1 if random expressionas are being generated and 0  if expression is provided
+    random = 0        #set to 1 if random expressionas are being generated and 0  if expression is provided
     visualize = True     #visualize expressions as a tree
-
 
     def p_S(self, p ):
         '''S : E
         '''
-        p[1].save(Rules.path+str(Rules.numgen+1), Rules.random)
-        if p[1].flag and Rules.random:
-            Rules.filename.write(Rules.exp+"\n")
-            Rules.numgen = Rules.numgen + 1
+        p[1].save(Rules.path+'/'+str(Rules.numgen+1), Rules.random)
 
+        if p[1].flag:
+            Rules.numgen = Rules.numgen + 1
+            if Rules.random:
+                Rules.filename.write(Rules.exp+"\n")
 
     def p_E1(self, p):
         '''E  : E E UNION
@@ -53,11 +54,11 @@ class Rules(object):
         scale = p[7]
 
         if p[1] == 'c':
-            p[0].draw_circle(center, scale)
+            p[0].draw_circle(center, scale, Rules.random)
         elif p[1] == 's':
-            p[0].draw_square(center, scale)
+            p[0].draw_square(center, scale, Rules.random)
         elif p[1] == 't':
-            p[0].draw_triangle(center, scale)
+            p[0].draw_triangle(center, scale, Rules.random)
         if Rules.visualize:
             self.makenode(p)
 
@@ -66,8 +67,11 @@ class Rules(object):
     def p_error(self, p):
         try:
             self.successful = False
-            print("Error "+ str(p.type) + " found at line " + str(p.lineno) + " at position " + str( p.lexpos))
-            parser.errok()
+            #print("Error "+ str(p.type) + " found at line " + str(p.lineno) + " at position " + str( p.lexpos))
+            if Rules.random == 0:
+                Rules.numgen += 1
+                w = canvas()
+                w.save(Rules.path + '/err' + str(Rules.numgen), Rules.random)
+            #self.parser.errok()
         except:
-            print('Unknown error')
-
+            print('Error. Please check, you may not receive the right metrics if you run metrics.py on the generated images.')

@@ -3,4 +3,5 @@ parsetab.py
 __pycache__
 *.png
 images*
-test
+test*
+*.pyc
