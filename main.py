@@ -8,7 +8,7 @@ import pydot
 from canvasops import canvas
 
 
-numexs = 25000
+numexs = 8000
 numops = 3
 opcolor = {'+': 'yellow', '-': 'red', '*':'blue'}
 
@@ -31,6 +31,7 @@ class Parser(Rules):
             if Rules.visualize:
                 self.plot_parse_tree(Rules.path +'/vis'+str(count))      #save the visualization graph
         else:
+            self.plot_parse_tree(Rules.path +'/errvis'+str(count))
             print('Could not parse expression number '+ str(count) + ': ' + exp)
 
         #remove unwanted intermediate canvases

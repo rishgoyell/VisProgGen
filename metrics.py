@@ -9,11 +9,11 @@ from skimage import feature
 from scipy.spatial.distance import cdist
 from scipy.spatial.distance import directed_hausdorff
 
-wrongpolicylist = ['fixed','balncan', 'ignore']
+wrongpolicylist = ['fixed','blancan', 'ignore']
 
 class Evaluate(object):
 
-	def __init__(self, gtdir=None, preddir=None, wrongpolicy='fixed'):
+	def __init__(self, gtdir=None, preddir=None, K=1, wrongpolicy='fixed'):
 		self.gtdir = gtdir
 		self.preddir = preddir
 		self.mse = 0
@@ -22,6 +22,7 @@ class Evaluate(object):
 		self.numimages = 0
 		self.numwrongexps = 0
 		self.wrongpolicy = wrongpolicy
+		self.K = K
 
 	def msefunc(self, arr1, arr2):
 		return np.sum(np.logical_xor(arr1, arr2))
@@ -64,8 +65,8 @@ class Evaluate(object):
 			self.chamferdist += self.chamferfunc(predimage, gtimage)
 		elif self.wrongpolicy=='fixed':
 			self.mse += canvas_shape[0]*canvas_shape[1]
-			self.hausdist += 64
-			self.chamferdist += 64
+			self.hausdist += canvas_shape[0]
+			self.chamferdist += canvas_shape[0]
 		elif self.wrongpolicy=='ignore':
 			return
 
@@ -77,20 +78,34 @@ class Evaluate(object):
 		self.hausdist = 0
 		self.chamferdist = 0
 		for filename in os.listdir(self.gtdir):
-			errflag = False
-			if filename.endswith('.png'):
+			if filename.endswith('.png') and 'vis' not in filename:
 				self.numimages += 1
-				gtimage = misc.imread(self.gtdir + '/' + filename)
-				gtimage = (gtimage[:,:,0]==0)
+		for i in range(self.numimages):
+			errflag = False
+			filename = str(i+1) + '.png'
+			gtimage = misc.imread(self.gtdir + '/' + filename)
+			gtimage = (gtimage[:,:,0]==0)
+			topk = canvas_shape[0]*canvas_shape[1]
+			kimage = None
+			kflag = None
+			for j in range(self.K):	
+				filename = str(i*self.K+j+1) + '.png'
 				if os.path.isfile(self.preddir + '/' + filename):
+					kflag = False
 					predimage = misc.imread(self.preddir + '/' + filename)
 					predimage = (predimage[:,:,0]==0)
 				else:
-					self.numwrongexps += 1
-					errflag = True
+					kflag = True
 					predimage = misc.imread(self.preddir + '/err' + filename)
 					predimage = (predimage[:,:,0]==0)
-				self.updatedist(predimage, gtimage, errflag)
+				thisk = self.msefunc(gtimage, predimage)
+				if thisk < topk:
+					errflag = kflag
+					kimage = predimage
+					topk = thisk
+			if errflag == True:
+				self.numwrongexps += 1
+			self.updatedist(kimage, gtimage, errflag)
 
 		if self.wrongpolicy == 'ignore':
 			self.numimages = self.numimages - self.numwrongexps
@@ -99,9 +114,10 @@ class Evaluate(object):
 
 
 if __name__ == '__main__':
-	gtdir = '/home/rishabh/Downloads/visualisations/xyz'
-	preddir = '/home/rishabh/Downloads/visualisations/yxz'
+	gtdir = '/home/rishabh/Documents/experiment/beamsearch/gt'
+	preddir = '/home/rishabh/Documents/experiment/beamsearch/predk1'
 	e = Evaluate(gtdir, preddir)
+	e.K = 1
 	for x in wrongpolicylist:
 		print("------------- "+x+" -------------")
 		e.wrongpolicy = x

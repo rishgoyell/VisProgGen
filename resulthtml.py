@@ -12,7 +12,7 @@ import numpy as np
 import math
 numtables = 4
 
-def genhtml(gtlist, gtdir, preddir, predlist=None, numexs=1000, vistree=False):
+def genhtml(gtlist, gtdir, preddir, predlist=None, numexs=500, vistree=False):
 	if predlist == None:
 		predlist = gtlist
 	assert len(predlist) == len(gtlist)
@@ -42,10 +42,14 @@ def genhtml(gtlist, gtdir, preddir, predlist=None, numexs=1000, vistree=False):
 			''')
 		for j in range(i*exspertable, min((i+1)*exspertable, numexs)):
 			count = count+1
+			if 'err' in predlist[randind[j]]:
+				color = ' bgcolor=red'
+			else:
+				color=''
 			fp.write('''
 				<tr>
-				<td>'''+ str(count) + '</td><td><img src=''' + gtdir + '/' + gtlist[randind[j]]+ ' alt='+ gtlist[randind[j]]+' height="325" width="195"/> </td>'
-				+'<td> <img src=' + preddir+'/'+predlist[randind[j]]+ ' alt='+ predlist[randind[j]] + ''' height="325" width="195"/> </td>
+				<td height="360" width="195">'''+ str(count) + '</td><td height="360" width="195"><img src=''' + 'gt' + '/' + gtlist[randind[j]]+ ' alt='+ gtlist[randind[j]]+' width="195"/> </td>'
+				+'<td  height="360" width="195"'+ color +'><img src=' + 'pred'+'/'+predlist[randind[j]]+ ' alt='+ predlist[randind[j]] + ''' width="195"/> </td>
 				</tr>''')
 
 
@@ -61,7 +65,7 @@ if __name__ == '__main__':
 			if os.path.isfile(preddir+'/'+filename):
 				predlist.append(filename)
 			else:
-				predlist.append('Error')
+				predlist.append('err'+filename)
 	# for line in fp:
 	# 	temp = line.strip('\n').split(', ')
 	# 	gtlist.append(temp[0])
