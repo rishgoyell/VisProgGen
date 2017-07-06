@@ -3,13 +3,12 @@ import numpy as np
 import ply.lex as lex
 import ply.yacc as yacc
 
-
 class Rules(object):
     numgen = 0      #keeps count of number of valid expressions generated
-    path = '/home/rishabh/Documents/VisProgGen/test3/p10'
+    path = '/home/rishabh/Documents/VisProgGen/test4/p6'
     exp = None        #the expression being parsed
     random = 0        #set to 1 if random expressionas are being generated and 0  if expression is provided
-    visualize = False     #visualize expressions as a tree
+    visualize = True   #visualize expressions as a tree
 
     def p_S(self, p ):
         '''S : E
@@ -72,6 +71,7 @@ class Rules(object):
                 Rules.numgen += 1
                 w = canvas()
                 w.save(Rules.path + '/err' + str(Rules.numgen), Rules.random)
-            #self.parser.errok()
+            while self.parser.token():
+                continue
         except:
             print('Error. Please check, you may not receive the right metrics if you run metrics.py on the generated images.')

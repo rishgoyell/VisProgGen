@@ -10,7 +10,7 @@
 import os, sys
 import numpy as np
 import math
-numtables = 4
+numtables = 3
 
 def genhtml(gtlist, gtdir, preddir, predlist=None, numexs=500, vistree=False):
 	if predlist == None:
@@ -27,10 +27,12 @@ def genhtml(gtlist, gtdir, preddir, predlist=None, numexs=500, vistree=False):
 			<title>Randomly Sampled Examples</title>
 			</head>
 			<body>
-			<h2>Stack with previous step information</h2>
+			<h2>7step programs</h2>
 			''')
 	exspertable = math.ceil(numexs/numtables)
 	count = 0
+	height = str(600)
+	width = str(250)
 	for i in range(numtables):
 		fp.write('''
 			<table width="200" border="5" style="float:left;">
@@ -48,14 +50,14 @@ def genhtml(gtlist, gtdir, preddir, predlist=None, numexs=500, vistree=False):
 				color=''
 			fp.write('''
 				<tr>
-				<td height="360" width="195">'''+ str(count) + '</td><td height="360" width="195"><img src=''' + 'gt' + '/' + gtlist[randind[j]]+ ' alt='+ gtlist[randind[j]]+' width="195"/> </td>'
-				+'<td  height="360" width="195"'+ color +'><img src=' + 'pred'+'/'+predlist[randind[j]]+ ' alt='+ predlist[randind[j]] + ''' width="195"/> </td>
+				<td height="''' + height + '" width="' + width + '"' + color + '>' + str(count) + '</td><td height="' + height + '" width="' + width + '"><img src=''' + 'gt' + '/' + gtlist[randind[j]]+ ' alt='+ gtlist[randind[j]]+' width="'+ width +'"/> </td>'
+				+'<td  height="' + height + '" width="' + width + '"><img src=' + 'pred'+'/'+predlist[randind[j]]+ ' alt='+ predlist[randind[j]] + ' width="'+ width +'''"/> </td>
 				</tr>''')
 
 
 if __name__ == '__main__':
-	gtdir = "/home/rishabh/Downloads/tmp/gt"
-	preddir = "/home/rishabh/Downloads/tmp/pred"
+	gtdir = "/home/rishabh/Documents/experiment/7step/gt"
+	preddir = "/home/rishabh/Documents/experiment/7step/pred"
 	# fp = open("/home/rishabh/Documents/experiment/3step/result.txt", 'r')
 	gtlist = []
 	predlist = []

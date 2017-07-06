@@ -19,6 +19,7 @@ class Evaluate(object):
 		self.mse = 0
 		self.hausdist = 0
 		self.chamferdist = 0
+		self.iou = 0
 		self.numimages = 0
 		self.numwrongexps = 0
 		self.wrongpolicy = wrongpolicy
@@ -26,6 +27,9 @@ class Evaluate(object):
 
 	def msefunc(self, arr1, arr2):
 		return np.sum(np.logical_xor(arr1, arr2))
+
+	def ioufunc(self, arr1, arr2):
+		return np.sum(np.logical_and(arr1, arr2))/np.sum(np.logical_or(arr1, arr2))
 
 	def hausfunc(self, arr1, arr2):
 	    arr1 = feature.canny(arr1, sigma=0.0)
@@ -63,10 +67,12 @@ class Evaluate(object):
 			self.mse += self.msefunc(predimage, gtimage)
 			self.hausdist += self.hausfunc(predimage, gtimage)
 			self.chamferdist += self.chamferfunc(predimage, gtimage)
+			self.iou += self.ioufunc(predimage, gtimage)
 		elif self.wrongpolicy=='fixed':
 			self.mse += canvas_shape[0]*canvas_shape[1]
 			self.hausdist += canvas_shape[0]
 			self.chamferdist += canvas_shape[0]
+			self.iou += 0
 		elif self.wrongpolicy=='ignore':
 			return
 
@@ -76,6 +82,7 @@ class Evaluate(object):
 		self.numwrongexps = 0
 		self.mse = 0
 		self.hausdist = 0
+		self.iou = 0
 		self.chamferdist = 0
 		for filename in os.listdir(self.gtdir):
 			if filename.endswith('.png') and 'vis' not in filename:
@@ -109,13 +116,13 @@ class Evaluate(object):
 
 		if self.wrongpolicy == 'ignore':
 			self.numimages = self.numimages - self.numwrongexps
-		print('Pixel-level accuracy:', 100-self.mse*100/(canvas_shape[0]*canvas_shape[1]*self.numimages), '\nMean Error:', self.mse/self.numimages, '\nAvg Hausdorff Distance:',self.hausdist/self.numimages, '\nAvg Chamfer Distance:',self.chamferdist/self.numimages)
+		print('Pixel-level accuracy:', 100-self.mse*100/(canvas_shape[0]*canvas_shape[1]*self.numimages),'IOU:', self.iou/self.numimages ,'\nMean Error:', self.mse/self.numimages, '\nAvg Hausdorff Distance:',self.hausdist/self.numimages, '\nAvg Chamfer Distance:',self.chamferdist/self.numimages)
 		print(str(self.numwrongexps) + ' wrong expressions out of ' + str(self.numimages))
 
 
 if __name__ == '__main__':
-	gtdir = '/home/rishabh/Documents/experiment/beamsearch/gt'
-	preddir = '/home/rishabh/Documents/experiment/beamsearch/predk1'
+	gtdir = '/home/rishabh/Documents/experiment/metrics/7step/gt'
+	preddir = '/home/rishabh/Documents/experiment/metrics/7step/pred'
 	e = Evaluate(gtdir, preddir)
 	e.K = 1
 	for x in wrongpolicylist:
