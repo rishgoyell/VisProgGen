@@ -8,7 +8,7 @@ class Rules(object):
     path = '/home/rishabh/Documents/VisProgGen/test4/p6'
     exp = None        #the expression being parsed
     random = 0        #set to 1 if random expressionas are being generated and 0  if expression is provided
-    visualize = True   #visualize expressions as a tree
+    visualize = False   #visualize expressions as a tree
 
     def p_S(self, p ):
         '''S : E

@@ -27,12 +27,12 @@ def genhtml(gtlist, gtdir, preddir, predlist=None, numexs=500, vistree=False):
 			<title>Randomly Sampled Examples</title>
 			</head>
 			<body>
-			<h2>7step programs</h2>
+			<h2>3+5+7 step programs</h2>
 			''')
 	exspertable = math.ceil(numexs/numtables)
 	count = 0
 	height = str(600)
-	width = str(250)
+	width = str(240)
 	for i in range(numtables):
 		fp.write('''
 			<table width="200" border="5" style="float:left;">
@@ -56,8 +56,8 @@ def genhtml(gtlist, gtdir, preddir, predlist=None, numexs=500, vistree=False):
 
 
 if __name__ == '__main__':
-	gtdir = "/home/rishabh/Documents/experiment/7step/gt"
-	preddir = "/home/rishabh/Documents/experiment/7step/pred"
+	gtdir = "/home/rishabh/Documents/experiment/varlength7/gt"
+	preddir = "/home/rishabh/Documents/experiment/varlength7/pred"
 	# fp = open("/home/rishabh/Documents/experiment/3step/result.txt", 'r')
 	gtlist = []
 	predlist = []
