@@ -5,6 +5,7 @@ from typing import List
 from skimage import draw
 import json
 from copy import copy
+import math
 #%matplotlib inline
 
 
@@ -40,14 +41,15 @@ class canvas(object):
 
 
 	################# DRAW TRIANGLE ################
-	def draw_triangle(self, center: List, length: int, randflag):
+	def draw_triangle(self, center: List, radius: int, angle: int,randflag):
 		arr = self.drawing
-		length = 1.732 * length
+		length = 1.732 * radius
+		angle = math.radians(angle)
 		rows = [
-			int(center[1] + length / (2 * 1.732)), int(center[1] + length / (2 * 1.732)),
-			int(center[1] - length / 1.732)
-		]
-		cols = [int(center[0] - length / 2.0), int(center[0] + length / 2.0), center[0]]
+			int(center[1] - radius*math.sin(angle-math.pi/6)), int(center[1] + radius*math.cos(math.pi/3-angle)),
+			int(center[1] - math.cos(angle)*radius)]
+		cols = [int(center[0] - radius*math.cos(angle-math.pi/6)), int(center[0] + radius*math.sin(math.pi/3-angle)), 
+			int(center[0]+radius*math.sin(angle))]
 
 		for i, j in zip(rows, cols):
 			if not self.inside_canvas([i, j]) and randflag:
@@ -66,17 +68,17 @@ class canvas(object):
 
 
 	################# DRAW SQUARE #################
-	def draw_square(self, center: list, length: int, randflag):
+	def draw_square(self, center: list, radius: int, angle: int, randflag):
 		arr = self.drawing
-		length *= 1.412
+		angle = math.radians(angle)
 		# generate the row vertices
 		rows = np.array([
-			int(center[0] - length / 2.0), int(center[0] + length / 2.0),
-			int(center[0] + length / 2.0), int(center[0] - length / 2.0)
+			int(center[0] - radius*math.sin(angle)), int(center[0] + radius*math.cos(angle)),
+			int(center[0] + radius*math.sin(angle)), int(center[0] - radius*math.cos(angle))
 		])
 		cols = np.array([
-			int(center[1] + length / 2.0), int(center[1] + length / 2.0),
-			int(center[1] - length / 2.0), int(center[1] - length / 2.0)
+			int(center[1] + radius*math.cos(angle)), int(center[1] + radius*math.sin(angle)),
+			int(center[1] - radius*math.cos(angle)), int(center[1] - radius*math.sin(angle))
 		])
 
 		for i, j in zip(rows, cols):

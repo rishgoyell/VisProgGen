@@ -27,7 +27,13 @@ def genoperand():
 		y = str(ylist[random.randint(0, len(ylist)-1)])
 		scale = str(scalelist[random.randint(0, len(scalelist)-1)])
 		shape = shapelist[random.randint(0, len(shapelist)-1)]
-		return shape + '(' + x + ',' + y + ',' + scale + ')'
+		if shape == 't':
+			angle = ',' + str(random.randint(0, 2)*30)
+		elif shape == 's':
+			angle = ',' + str(random.randint(0,1)*45)
+		else:
+			angle = ''
+		return shape + '(' + x + ',' + y + ',' + scale + angle + ')'
 
 def genparenthesis(openp, closep, currstr=""):
 	if openp == 0:
@@ -41,6 +47,17 @@ def genparenthesis(openp, closep, currstr=""):
 	genparenthesis(openp-1, closep, currstr+'(')
 	genparenthesis(openp, closep-1, currstr+')')
 	return
+
+def genoperator(plus, minus, star):
+	x = random.randint(0, plus+minus+star-1)
+	if x<plus:
+		op = 0
+	elif x<plus+minus:
+		op = 1
+	else:
+		op = 2
+	return oplist[op]
+
 
 def createparendatastructure(maxops):
 	for i in range(maxops):
@@ -98,5 +115,5 @@ def fixedSizeExp(numops):
 		if p == '(':
 			expstring = expstring + genoperand()
 		else:
-			expstring = expstring + oplist[random.randint(0,2)]
+			expstring = expstring + genoperator(1,5,20) #oplist[random.randint(0,2)]
 	return expstring

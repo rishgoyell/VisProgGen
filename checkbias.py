@@ -31,6 +31,7 @@ class stats(object):
 		self.scale = np.zeros(-(-(max_scale-min_scale+1)//scalestep), dtype=int)
 		self.randlen = randlen
 		self.numops = {}
+		self.angle = {'30':0, '45':0, '60':0, '0':0}
 
 	def printstats(self):
 		print("<<<<<<<<< Position >>>>>>>>>> \n")
@@ -56,9 +57,14 @@ class stats(object):
 		for i in self.shape.keys():
 			print(i, self.shape[i])
 
-		print("\n<<<<<<<<<< Scale >>>>>>>>>>\n")
-		for i in range(self.scale.shape[0]):
-			print(i*self.scalestep+min_scale,"\t", self.scale[i])
+		# print("\n<<<<<<<<<< Scale >>>>>>>>>>\n")
+		# for i in range(self.scale.shape[0]):
+		# 	print(i*self.scalestep+min_scale,"\t", self.scale[i])
+		# print("\n")
+
+		print("\n<<<<<<<<<< Angles >>>>>>>>>>\n")
+		for i in self.angle.keys():
+			print(i, self.angle[i])
 		print("\n")
 
 		if self.randlen:
@@ -68,7 +74,7 @@ class stats(object):
 
 
 randlen = 1
-filename = '/home/rishabh/Documents/VisProgGen/test4/all.txt'
+filename = '/home/rishabh/Documents/VisProgGen/testrot/5step_rotated.txt'
 datastats = stats(canvas_shape, xstep, ystep, scalestep, min_scale, max_scale, randlen=randlen)
 
 
@@ -76,8 +82,10 @@ with open(filename) as f:
 	for line in f:
 		for op in oplist:
 			datastats.operation[op] += line.count(op)
-		for scale in scalelist:
-			datastats.scale[(scale-min_scale)//scalestep] += line.count(str(scale)+')')
+		# for scale in scalelist:
+		# 	datastats.scale[(scale-min_scale)//scalestep] += line.count(str(scale)+')')
+		for item in datastats.angle.keys():
+			datastats.angle[item] += line.count(',' + str(item) + ')')
 		for shape in shapelist:
 			datastats.shape[shape] += line.count(shape+'(')
 		for x in xlist:
