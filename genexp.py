@@ -91,17 +91,19 @@ def fixedSizeExpLim(numops):
 def fixedSizeExp(numops):
 	if validlist == []:
 		createparendatastructure(5)
-		print("check")
+		# print("check")
 	expstring = genoperand()
 	exptype = random.randint(0, len(validlist[numops-1])-1)
 	for p in validlist[numops-1][exptype]:
 		if p == '(':
 			expstring = expstring + genoperand()
 		else:
-		    op = random.randint(0,30)
-		    if op in range(1,7):
+		    op = random.randint(0,24)
+		    if op in range(2,8):
 		        op = 1
-		    elif op in range(7,31):
+		    elif op in range(8,25):
 		    	op = 2
+		    elif op in range(0,2):
+		    	op = 0
 		    expstring = expstring + oplist[op]
 	return expstring
