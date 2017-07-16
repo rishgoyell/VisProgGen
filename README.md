@@ -18,7 +18,7 @@ Implemented in python 3.6 using PLY, pydot and other standard python libraries.
  - Generate the corresponding image by executing ```python main.py filename_1 filename_2```
  - For generating random expressions and their corresponding visualisation, run ```python main.py``` without a filename following it.
  - To check the stats(such as distribution of shapes, positions, program length, scale and operations) for images generated using  set of expressions, run ```python checkbias.py``` after changing the value of the filename variable.
- - To visualise multiple ground truth, predicted image pairs in an html page run ```python resulthtml.py```
+ - To visualise multiple ground truth-predicted image pairs in an html page run ```python resulthtml.py```
  - To evaluate the predictions made use the ```metrics.py``` script.
 
 ## Managing Parameters 
@@ -26,7 +26,8 @@ Implemented in python 3.6 using PLY, pydot and other standard python libraries.
  - Canvas size can be controlled through the ```canvas_shape``` variable in canvasops.py
  - The ```path``` variable in grammar.py determines where the generated files are stored for random expressions. If the expressions are provided in a file then the visualisations are generated in the folder containing the expressions file, irrespective of the value of ```path```.
  - The restrictions on the random expressions can be found and changed in canvasops.py
- - If the tree visualisations are not required, set ```visualize``` in grammar.py to False.
+ - If the tree visualisations are not required, set ```visualize=False``` in grammar.py.
+ - To generate all commutatively equivalent expressions, set ```commutate=True``` in grammar.py. The required expressions can be found in the ```commexp.txt``` file, once the program finishes execution.
  
 ### Note:
 - The visualisation process creates temporary files of the form ```tempNUM.png``` (where NUM can be any number) and then deletes them. If any file of that form exists in the concerned folder, it will be deleted.
