@@ -121,8 +121,8 @@ class Evaluate(object):
 
 
 if __name__ == '__main__':
-	gtdir = '/home/rishabh/Documents/experiment/metrics/varlength_7/gt'
-	preddir = '/home/rishabh/Documents/experiment/metrics/varlength_7/pred'
+	gtdir = '/home/rishabh/Documents/experiment/metrics/large7step/gt'
+	preddir = '/home/rishabh/Documents/experiment/metrics/large7step/pred'
 	e = Evaluate(gtdir, preddir)
 	e.K = 1
 	for x in wrongpolicylist:

@@ -22,6 +22,7 @@ class canvas(object):
 		self.drawing = np.zeros(canvas_shape, dtype=int)
 		self.flag = 1
 		self.nodeID = None
+		self.treeNode = None
 
 
 	################# DRAW CIRCLE ################

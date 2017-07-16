@@ -2,6 +2,14 @@ from canvasops import canvas
 import numpy as np
 import ply.lex as lex
 import ply.yacc as yacc
+import commutation
+
+class tree(object):
+    def __init__(self, value, lnode=None, rnode=None):
+        self.value = value
+        self.lnode = lnode
+        self.rnode = rnode
+
 
 class Rules(object):
     numgen = 0      #keeps count of number of valid expressions generated
@@ -9,6 +17,7 @@ class Rules(object):
     exp = None        #the expression being parsed
     random = 0        #set to 1 if random expressionas are being generated and 0  if expression is provided
     visualize = False   #visualize expressions as a tree
+    commutate = False
 
     def p_S(self, p ):
         '''S : E
@@ -17,12 +26,19 @@ class Rules(object):
 
         if p[1].flag:
             Rules.numgen = Rules.numgen + 1
-            if Rules.random:
+            if Rules.random and not Rules.commutate:
                 Rules.filename.write(Rules.exp+"\n")
+            elif Rules.commutate:
+                commexp = commutation.commutate(p[1].treeNode)
+                for item in commexp:
+                    Rules.filename.write(item+"\n")
+                Rules.filename.write("_________________________________\n")
 
     def p_E1(self, p):
         '''E  : E E UNION
         '''
+        if Rules.commutate:
+            p[1].treeNode = tree('+', p[1].treeNode,p[2].treeNode)
         p[0] = p[1].union(p[2], Rules.random)
         if Rules.visualize:
             self.makenode(p)
@@ -31,6 +47,8 @@ class Rules(object):
     def p_E2(self, p):
         '''E : E E DIFFERENCE
         '''
+        if Rules.commutate:
+            p[1].treeNode = tree('-', p[1].treeNode,p[2].treeNode)
         p[0] = p[1].difference(p[2], Rules.random)
         if Rules.visualize:
             self.makenode(p)
@@ -39,9 +57,12 @@ class Rules(object):
     def p_E3(self, p):
         '''E : E E INTERSECTION
         '''
+        if Rules.commutate:
+            p[1].treeNode = tree('*', p[1].treeNode,p[2].treeNode)
         p[0] = p[1].intersection(p[2], Rules.random)
         if Rules.visualize:
             self.makenode(p)
+
 
 
 
@@ -49,6 +70,8 @@ class Rules(object):
         '''E : IDENTIFIER '(' INTEGER ',' INTEGER ',' INTEGER ')'
         '''
         p[0] = canvas()
+        if Rules.commutate:
+            p[0].treeNode = tree(str(p[1]) + str(p[2]) + str(p[3]) + str(p[4]) + str(p[5]) + str(p[6]) + str(p[7]) + str(p[8]))
         center = [p[3], p[5]]
         scale = p[7]
 

@@ -100,6 +100,8 @@ if __name__ == '__main__':
             Rules.random = 0
             print(sys.argv[i])
             Rules.path = os.path.dirname(sys.argv[i])
+            if Rules.commutate:
+                Rules.filename = open(Rules.path+'/commexpressions.txt', 'w')
             assert type(sys.argv[i]) is str
             try:
                 fp = open(sys.argv[i], 'r')
