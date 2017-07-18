@@ -68,7 +68,7 @@ class stats(object):
 
 
 randlen = 1
-filename = '/home/rishabh/Documents/VisProgGen/temp/temp7.txt'
+filename = '/home/rishabh/Documents/VisProgGen/test3/7steps.txt'
 datastats = stats(canvas_shape, xstep, ystep, scalestep, min_scale, max_scale, randlen=randlen)
 
 

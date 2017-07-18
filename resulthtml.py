@@ -24,10 +24,10 @@ def genhtml(gtlist, gtdir, preddir, predlist=None, numexs=500, vistree=False):
 			<html lang="en">
 			<head>
 			<meta charset="UTF-8">
-			<title>Randomly Sampled Examples</title>
+			<title>Vanilla RNN: 7step with 500k Samples</title>
 			</head>
 			<body>
-			<h2>3+5+7 step programs</h2>
+			<h2>7 step programs (trained with 500k samples)</h2>
 			''')
 	exspertable = math.ceil(numexs/numtables)
 	count = 0
@@ -56,8 +56,8 @@ def genhtml(gtlist, gtdir, preddir, predlist=None, numexs=500, vistree=False):
 
 
 if __name__ == '__main__':
-	gtdir = "/home/rishabh/Documents/experiment/varlength7/gt"
-	preddir = "/home/rishabh/Documents/experiment/varlength7/pred"
+	gtdir = "/home/rishabh/Documents/experiment/large7step/gt"
+	preddir = "/home/rishabh/Documents/experiment/large7step/pred"
 	# fp = open("/home/rishabh/Documents/experiment/3step/result.txt", 'r')
 	gtlist = []
 	predlist = []
