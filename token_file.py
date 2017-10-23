@@ -10,6 +10,7 @@ def build_lexer(debug_mode=True, optimize_mode=False):
         'UNION',
         'INTERSECTION',
         'DIFFERENCE',
+        'COLON',
         'INTEGER'
     ]
 
@@ -26,6 +27,10 @@ def build_lexer(debug_mode=True, optimize_mode=False):
 
     def t_DIFFERENCE(t):
         r'-'
+        return t
+
+    def t_COLON(t):
+        r':'
         return t
 
     def t_IDENTIFIER(t):

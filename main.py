@@ -8,8 +8,8 @@ import pydot
 from canvasops import canvas
 
 
-numexs = 25000
-numops = 2
+numexs = 200000
+numops = 0
 opcolor = {'+': 'yellow', '-': 'red', '*':'blue'}
 
 class Parser(Rules):

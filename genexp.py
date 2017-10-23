@@ -20,6 +20,7 @@ ylist = range(min_scale, canvas_shape[1], ystep)
 scalelist = range(min_scale, max_scale+1, scalestep)
 shapelist = ['c', 't', 's']
 validlist = []
+listoblist = ['1:2','2:1','1:4','4:1']
 
 def genoperand():
 	while True:
@@ -29,11 +30,14 @@ def genoperand():
 		shape = shapelist[random.randint(0, len(shapelist)-1)]
 		if shape == 't':
 			angle = ',' + str(random.randint(0, 2)*30)
+			listob = ''
 		elif shape == 's':
-			angle = ',' + str(random.randint(0,1)*45)
+			angle = ''
+			listob = ',' + listoblist[random.randint(0,3)]
 		else:
 			angle = ''
-		return shape + '(' + x + ',' + y + ',' + scale + angle + ')'
+			listob = ''
+		return shape + '(' + x + ',' + y + ',' + scale + angle + listob + ')'
 
 def genparenthesis(openp, closep, currstr=""):
 	if openp == 0:
@@ -106,6 +110,8 @@ def fixedSizeExpLim(numops):
 	return expstring
 
 def fixedSizeExp(numops):
+	if numops == 0:
+		return genoperand()
 	if validlist == []:
 		createparendatastructure(5)
 		print("check")
@@ -115,5 +121,5 @@ def fixedSizeExp(numops):
 		if p == '(':
 			expstring = expstring + genoperand()
 		else:
-			expstring = expstring + genoperator(1,5,20) #oplist[random.randint(0,2)]
+			expstring = expstring + genoperator(1,1,1) #oplist[random.randint(0,2)]
 	return expstring

@@ -5,10 +5,10 @@ import ply.yacc as yacc
 
 class Rules(object):
     numgen = 0      #keeps count of number of valid expressions generated
-    path = '/home/rishabh/Documents/VisProgGen/testrot/p4'
+    path = '/home/rishabh/Documents/VisProgGen/test1'
     exp = None        #the expression being parsed
     random = 0        #set to 1 if random expressionas are being generated and 0  if expression is provided
-    visualize = True   #visualize expressions as a tree
+    visualize = False  #visualize expressions as a tree
 
     def p_S(self, p ):
         '''S : E
@@ -48,6 +48,7 @@ class Rules(object):
     def p_E4(self, p):
         '''E : IDENTIFIER '(' INTEGER ',' INTEGER ',' INTEGER ')'
         | IDENTIFIER '(' INTEGER ',' INTEGER ',' INTEGER ',' INTEGER ')'
+        | IDENTIFIER '(' INTEGER ',' INTEGER ',' INTEGER ',' INTEGER COLON INTEGER ')'
         '''
         p[0] = canvas()
         center = [p[3], p[5]]
@@ -57,8 +58,11 @@ class Rules(object):
         if p[1] == 'c':
             p[0].draw_circle(center, scale, Rules.random)
         elif p[1] == 's':
-            p[0].draw_square(center, scale, angle, Rules.random)
+            length = p[9]
+            breadth = p[11]
+            p[0].draw_rectangle(center, scale, length, breadth, Rules.random)
         elif p[1] == 't':
+            angle = p[9]
             p[0].draw_triangle(center, scale, angle, Rules.random)
         if Rules.visualize:
             self.makenode(p)

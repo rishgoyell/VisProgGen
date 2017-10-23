@@ -68,17 +68,19 @@ class canvas(object):
 
 
 	################# DRAW SQUARE #################
-	def draw_square(self, center: list, radius: int, angle: int, randflag):
+	def draw_rectangle(self, center: list, radius: int, length: int, breadth:int, randflag):
 		arr = self.drawing
-		angle = math.radians(angle)
+		x = np.sqrt(radius*radius/(length*length+breadth*breadth))
+		hlength = int(x*length)
+		hbreadth = int(x*breadth)
 		# generate the row vertices
 		rows = np.array([
-			int(center[0] - radius*math.sin(angle)), int(center[0] + radius*math.cos(angle)),
-			int(center[0] + radius*math.sin(angle)), int(center[0] - radius*math.cos(angle))
+			int(center[0] - hlength), int(center[0] + hlength),
+			int(center[0] + hlength), int(center[0] - hlength)
 		])
 		cols = np.array([
-			int(center[1] + radius*math.cos(angle)), int(center[1] + radius*math.sin(angle)),
-			int(center[1] - radius*math.cos(angle)), int(center[1] - radius*math.sin(angle))
+			int(center[1] + hbreadth), int(center[1] + hbreadth),
+			int(center[1] - hbreadth), int(center[1] - hbreadth)
 		])
 
 		for i, j in zip(rows, cols):
