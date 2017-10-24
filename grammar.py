@@ -5,7 +5,7 @@ import ply.yacc as yacc
 
 class Rules(object):
     numgen = 0      #keeps count of number of valid expressions generated
-    path = '/home/rishabh/Documents/VisProgGen/test1'
+    path = '/home/rishabh/Documents/VisProgGen/test1/test'
     exp = None        #the expression being parsed
     random = 0        #set to 1 if random expressionas are being generated and 0  if expression is provided
     visualize = False  #visualize expressions as a tree

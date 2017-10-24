@@ -46,10 +46,10 @@ class canvas(object):
 		length = 1.732 * radius
 		angle = math.radians(angle)
 		rows = [
-			int(center[1] - radius*math.sin(angle-math.pi/6)), int(center[1] + radius*math.cos(math.pi/3-angle)),
-			int(center[1] - math.cos(angle)*radius)]
-		cols = [int(center[0] - radius*math.cos(angle-math.pi/6)), int(center[0] + radius*math.sin(math.pi/3-angle)), 
-			int(center[0]+radius*math.sin(angle))]
+			center[1] - radius*math.sin(angle-math.pi/6), center[1] + radius*math.cos(math.pi/3-angle),
+			center[1] - math.cos(angle)*radius]
+		cols = [center[0] - radius*math.cos(angle-math.pi/6), center[0] + radius*math.sin(math.pi/3-angle), 
+			center[0]+radius*math.sin(angle)]
 
 		for i, j in zip(rows, cols):
 			if not self.inside_canvas([i, j]) and randflag:
@@ -71,16 +71,16 @@ class canvas(object):
 	def draw_rectangle(self, center: list, radius: int, length: int, breadth:int, randflag):
 		arr = self.drawing
 		x = np.sqrt(radius*radius/(length*length+breadth*breadth))
-		hlength = int(x*length)
-		hbreadth = int(x*breadth)
+		hlength = x*length
+		hbreadth = x*breadth
 		# generate the row vertices
 		rows = np.array([
-			int(center[0] - hlength), int(center[0] + hlength),
-			int(center[0] + hlength), int(center[0] - hlength)
+			center[0] - hlength, center[0] + hlength,
+			center[0] + hlength, center[0] - hlength
 		])
 		cols = np.array([
-			int(center[1] + hbreadth), int(center[1] + hbreadth),
-			int(center[1] - hbreadth), int(center[1] - hbreadth)
+			center[1] + hbreadth, center[1] + hbreadth,
+			center[1] - hbreadth, center[1] - hbreadth
 		])
 
 		for i, j in zip(rows, cols):
@@ -121,7 +121,7 @@ class canvas(object):
 		temp = np.sum(self.drawing)
 		self.drawing = np.logical_or(self.drawing, c2.drawing)
 		onpixels = np.sum(self.drawing)
-		if onpixels <= int(1.1*max(temp, np.sum(c2.drawing))) or int(0.8*numpixels) <= onpixels: #or onpixels >= 0.9*(temp+np.sum(c2.drawing)):
+		if onpixels < int(1.05*max(temp, np.sum(c2.drawing))) or int(0.95*numpixels) < onpixels: #or onpixels >= 0.9*(temp+np.sum(c2.drawing)):
 			self.flag = 0
 		return self
 
@@ -138,7 +138,7 @@ class canvas(object):
 		temp = np.sum(self.drawing)
 		self.drawing =  self.drawing - np.logical_and(self.drawing, c2.drawing)
 		onpixels = np.sum(self.drawing)
-		if int(0.9*temp) <= onpixels or onpixels <= int(0.1*numpixels):
+		if int(0.95*temp) < onpixels or onpixels < int(0.05*numpixels):
 			self.flag = 0
 		return self
 
@@ -155,7 +155,7 @@ class canvas(object):
 		temp = np.sum(self.drawing)
 		self.drawing = np.logical_and(self.drawing, c2.drawing)
 		onpixels = np.sum(self.drawing)
-		if int(0.9*min(temp, np.sum(c2.drawing))) <= onpixels or onpixels <= int(0.1*numpixels):
+		if int(0.95*min(temp, np.sum(c2.drawing))) < onpixels or onpixels < int(0.05*numpixels):
 			self.flag = 0
 		return self
 
@@ -169,7 +169,7 @@ class canvas(object):
 		#for expression received randomly
 		else:
 			onpixels = np.sum(self.drawing)
-			if onpixels <= int(0.1*numpixels) or int(0.8*numpixels) <= onpixels:
+			if onpixels < int(0.05*numpixels) or int(0.95*numpixels) < onpixels:
 				self.flag = 0
 			if self.flag:
 				a = np.logical_not(self.drawing)

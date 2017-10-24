@@ -17,27 +17,50 @@ max_scale = canvas_shape[0]//2
 oplist = ['+', '-', '*']
 xlist = range(min_scale, canvas_shape[0], xstep)
 ylist = range(min_scale, canvas_shape[1], ystep)
+xlist = [12,20,24,28,32,36,40,44,52]
+ylist = xlist
 scalelist = range(min_scale, max_scale+1, scalestep)
 shapelist = ['c', 't', 's']
 validlist = []
-listoblist = ['1:2','2:1','1:4','4:1']
+listoblist = ['1:2','2:1','1:4','4:1', '1:1']
 
-def genoperand():
-	while True:
-		x = str(xlist[random.randint(0, len(xlist)-1)])
-		y = str(ylist[random.randint(0, len(ylist)-1)])
-		scale = str(scalelist[random.randint(0, len(scalelist)-1)])
-		shape = shapelist[random.randint(0, len(shapelist)-1)]
-		if shape == 't':
-			angle = ',' + str(random.randint(0, 2)*30)
-			listob = ''
-		elif shape == 's':
-			angle = ''
-			listob = ',' + listoblist[random.randint(0,3)]
+def load_primitives(filename):
+	primlist = []
+	with open(filename, 'r') as f:
+		for prim in f:
+			primlist.append(prim)
+	return primlist
+
+circlelist = load_primitives('/home/rishabh/Documents/VisProgGen/circles.txt')
+rectlist = load_primitives('/home/rishabh/Documents/VisProgGen/rectangles.txt')
+trilist = load_primitives('/home/rishabh/Documents/VisProgGen/triangles.txt')
+
+
+def genoperand(dictflag):
+	if dictflag:
+		shapenum = random.randint(0,4)
+		if shapenum in [0,1,2]:
+			return circlelist[random.randint(0,len(circlelist)-1)]
+		elif shapenum == 3:
+			return rectlist[random.randint(0,len(rectlist)-1)]
 		else:
-			angle = ''
-			listob = ''
-		return shape + '(' + x + ',' + y + ',' + scale + angle + listob + ')'
+			return trilist[random.randint(0,len(trilist)-1)]
+	else:
+		while True:
+			x = str(xlist[random.randint(0, len(xlist)-1)])
+			y = str(ylist[random.randint(0, len(ylist)-1)])
+			scale = str(scalelist[random.randint(0, len(scalelist)-1)])
+			shape = shapelist[random.randint(0, len(shapelist)-1)]
+			if shape == 't':
+				angle = ',' + str(random.randint(0, 3)*30)
+				listob = ''
+			elif shape == 's':
+				angle = ''
+				listob = ',' + listoblist[random.randint(0,4)]
+			else:
+				angle = ''
+				listob = ''
+			return shape + '(' + x + ',' + y + ',' + scale + angle + listob + ')'
 
 def genparenthesis(openp, closep, currstr=""):
 	if openp == 0:
@@ -110,16 +133,17 @@ def fixedSizeExpLim(numops):
 	return expstring
 
 def fixedSizeExp(numops):
+	dictflag = True
 	if numops == 0:
 		return genoperand()
 	if validlist == []:
 		createparendatastructure(5)
 		print("check")
-	expstring = genoperand()
+	expstring = genoperand(dictflag)
 	exptype = random.randint(0, len(validlist[numops-1])-1)
 	for p in validlist[numops-1][exptype]:
 		if p == '(':
-			expstring = expstring + genoperand()
+			expstring = expstring + genoperand(dictflag)
 		else:
 			expstring = expstring + genoperator(1,1,1) #oplist[random.randint(0,2)]
 	return expstring
