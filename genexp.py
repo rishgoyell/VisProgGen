@@ -28,12 +28,13 @@ def load_primitives(filename):
 	primlist = []
 	with open(filename, 'r') as f:
 		for prim in f:
-			primlist.append(prim)
+			primlist.append(prim[:-1])
 	return primlist
 
-circlelist = load_primitives('/home/rishabh/Documents/VisProgGen/circles.txt')
-rectlist = load_primitives('/home/rishabh/Documents/VisProgGen/rectangles.txt')
-trilist = load_primitives('/home/rishabh/Documents/VisProgGen/triangles.txt')
+
+circlelist = load_primitives('/home/rishabh/Documents/VisProgGen/primitives/circles.txt')
+rectlist = load_primitives('/home/rishabh/Documents/VisProgGen/primitives/rectangles.txt')
+trilist = load_primitives('/home/rishabh/Documents/VisProgGen/primitives/triangles.txt')
 
 
 def genoperand(dictflag):
