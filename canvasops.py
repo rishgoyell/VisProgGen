@@ -1,6 +1,6 @@
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.cm as cm
+# import matplotlib.pyplot as plt
+# import matplotlib.cm as cm
 from typing import List
 from skimage import draw
 import json
@@ -164,7 +164,7 @@ class canvas(object):
 		#for expression received through a file
 		if not randflag:
 			a = np.logical_not(self.drawing)
-			plt.imsave(filename+'.png', np.array(a).reshape(canvas_shape[0], canvas_shape[1]), cmap=cm.gray)			
+			# plt.imsave(filename+'.png', np.array(a).reshape(canvas_shape[0], canvas_shape[1]), cmap=cm.gray)			
 
 		#for expression received randomly
 		else:
@@ -173,4 +173,4 @@ class canvas(object):
 				self.flag = 0
 			if self.flag:
 				a = np.logical_not(self.drawing)
-				plt.imsave(filename +'.png', np.array(a).reshape(canvas_shape[0], canvas_shape[1]), cmap=cm.gray)
+				# plt.imsave(filename +'.png', np.array(a).reshape(canvas_shape[0], canvas_shape[1]), cmap=cm.gray)
