@@ -18,8 +18,8 @@ class Rules(object):
         if p[1].flag:
             Rules.numgen = Rules.numgen + 1
             if Rules.random:
-                # Rules.filename.write(Rules.exp+"\n")
-                print(Rules.exp+"\n")
+                Rules.filename.write(Rules.exp+"\n")
+                # print(Rules.exp+"\n")
 
     def p_E1(self, p):
         '''E  : E E UNION

@@ -4,7 +4,7 @@ import os, re
 import ply.lex as lex
 from grammar import Rules
 import genexp
-# import pydot
+import pydot
 from canvasops import canvas
 
 
